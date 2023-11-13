@@ -1,5 +1,8 @@
+
+
 public class Game {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-    }
+    double money;
+    Plots[] plots;
+
+    public Game() {}
 }
