@@ -2,7 +2,7 @@
 
 public class Game {
     double money;
-    Plots[] plots;
+    Plot[] plots;
 
     public Game() {}
 }
