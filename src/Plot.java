@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 
 public class Plot {
+    private final int PLOTSIZE = 70;
     private ArrayList<Tree> trees;
-    private int plotSize;
+    private int smallTrees;
 
     public Plot() {
         trees = new ArrayList<Tree>();
@@ -12,5 +13,10 @@ public class Plot {
         trees.add(new Tree());
     }
 
-    public void setPlotSize
+    public void replaceTree() {
+
+    }
+    public int lemonsPerWeek() {
+        smallTrees * 5
+    }
 }

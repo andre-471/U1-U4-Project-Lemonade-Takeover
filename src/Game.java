@@ -1,8 +1,10 @@
-
+import java.util.ArrayList;
 
 public class Game {
-    double money;
-    Plot[] plots;
+    private double money;
+    private ArrayList<Plot> plots;
 
-    public Game() {}
+    public Game() {
+        plots = new ArrayList<Plot>();
+    }
 }
