@@ -1,6 +1,8 @@
 import java.util.Scanner;
 
 public class GameIO {
+    private final String[] USER_CHOICES = new String[]{"trees", "plots", "end week"};
+    private final String[] TREE_CHOICES = new String[]{"large", "medium", "small"};
     private Scanner scan = new Scanner(System.in);
     private Game game;
     public GameIO() {
@@ -16,7 +18,7 @@ public class GameIO {
     // game goes by week, gives player the option on what to do, random events first
     public void mainMenu() {
         System.out.println("$money -- #plots -- #trees\nbuy trees\nbuy plots\nend week");
-        String userInput = repeatUntil(new String[]{"trees", "plots", "end week"});
+        String userInput = repeatUntil(USER_CHOICES);
 
     }
 
@@ -24,7 +26,7 @@ public class GameIO {
 
     public void newTrees() {
         System.out.print("What kind of tree would you like?: ");
-        String userInput = repeatUntil(new String[]{"large", "medium", "small"});
+        String userInput = repeatUntil(TREE_CHOICES);
         System.out.println(userInput);
     }
 
