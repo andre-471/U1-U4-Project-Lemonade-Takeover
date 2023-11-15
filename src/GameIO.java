@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Scanner;
 
 public class GameIO {
@@ -17,7 +18,15 @@ public class GameIO {
     public void mainMenu() {
         System.out.println("$money -- #plots -- #trees\nbuy trees\nbuy plots\nend week");
         String userInput = repeatUntil(new String[]{"trees", "plots", "end week"});
-
+        if (userInput.equals("trees")) {
+            newTrees();
+        } else if (userInput.equals("plots")) {
+            /* newPlot() unimplemented method */
+        } else if (userInput.equals("end week")) {
+            /* nextWeek() unimplemented method */
+        } else {
+            throw new RuntimeException("Error, this shouldn't be possible to access");
+        }
     }
 
 
@@ -26,6 +35,10 @@ public class GameIO {
         System.out.print("What kind of tree would you like?: ");
         String userInput = repeatUntil(new String[]{"large", "medium", "small"});
         System.out.println(userInput);
+    }
+
+    public void newPlot() {
+
     }
 
     private boolean checkInt(String checkingStr) {
@@ -44,7 +57,7 @@ public class GameIO {
             System.out.print("Error please try again: ");
         }
 
-        return input;
+        return input.toLowerCase();
     }
 
     private boolean stringInArray(String[] strings, String string) {
