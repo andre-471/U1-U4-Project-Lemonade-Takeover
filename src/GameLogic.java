@@ -1,14 +1,15 @@
 import java.util.Scanner;
 
-public class GameIO {
+public class GameLogic {
     private final String[] USER_CHOICES = new String[]{"trees", "plots", "end week"};
     private final String[] TREE_CHOICES = new String[]{"large", "medium", "small"};
-    private final char[] OPTIONS = new char[]{'y', 'n'};
-    private Scanner scan = new Scanner(System.in);
+    private final String[] OPTIONS = new String[]{"y", "n"};
+    private Scanner scan;
     private Game game;
 
-    public GameIO() {
+    public GameLogic() {
         game = new Game();
+        scan = new Scanner(System.in);
     }
 
     public void start() {
@@ -20,28 +21,30 @@ public class GameIO {
         System.out.println("$money -- #plots -- #trees\nbuy trees\nbuy plots\nend week");
         String userInput = repeatUntil(USER_CHOICES);
         if (userInput.equals("trees")) {
-            newTrees();
+            newTree();
         } else if (userInput.equals("plots")) {
-            /* newPlot() unimplemented method */
+            newPlot();
         } else if (userInput.equals("end week")) {
             /* nextWeek() unimplemented method */
         } else {
-            throw new RuntimeException("Error, this shouldn't be possible to access");
+            throw new IllegalStateException("Unexpected value: " + userInput);
         }
 
     }
 
-    public void newTrees() {
+    public void newTree() {
         System.out.print("What kind of tree would you like?: ");
         String userInput = repeatUntil(TREE_CHOICES);
-        System.out.println(userInput);
+        System.out.print("What plot # do you want to add the tree to?: ");
+        int plotNum = repeatUntil(1, game.totalPlots());
+
     }
 
     public void newPlot() {
 
     }
 
-    private boolean checkInt(String checkingStr) {
+    private boolean isInt(String checkingStr) {
         try {
             Integer.parseInt(checkingStr);
             return true;
@@ -51,41 +54,33 @@ public class GameIO {
     }
 
     private String repeatUntil(String[] strings) {
-        String input = scan.nextLine();
+        String input = scan.nextLine().trim().toLowerCase();
         while (!objectInArray(strings, input)) {
-            input = scan.nextLine();
+            input = scan.nextLine().trim().toLowerCase();
             System.out.print("Error please try again: ");
         }
 
-        return input.toLowerCase();
+        return input;
     }
 
-    private char repeatUntil(char[] chars) {
-        String input;
+    private int repeatUntil(int min, int max) {
+        String input = scan.nextLine().trim().toLowerCase();
+        while (!isInt(input) && Integer.parseInt(input) <= min && Integer.parseInt(input) >= max) {
+            input = scan.nextLine().trim().toLowerCase();
+            System.out.print("Error please try again: ");
+        }
 
-        do {
-            input = scan.nextLine().trim();
-        } while (input.length() != 1 && !objectInArray(chars, input.charAt(0)));
-
-        return input.charAt(0);
+        return Integer.parseInt(input);
     }
 
     private boolean objectInArray(String[] strings, String string) {
         for (String arrayString : strings) {
-            if (arrayString.equalsIgnoreCase(string)) {
+            if (arrayString.equals(string)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean objectInArray(char[] chars, char character) {
-        for (char arrayChar : chars) {
-            if (arrayChar == character) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 }

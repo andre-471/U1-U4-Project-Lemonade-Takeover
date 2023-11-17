@@ -4,25 +4,35 @@ public class Plot {
     private final int PLOTSIZE = 70;
     private ArrayList<Tree> trees;
     private int availableSpace;
-    private int smallTrees;
-    private int mediumTrees;
-    private int largeTrees;
-
     public Plot() {
         trees = new ArrayList<Tree>();
         availableSpace = PLOTSIZE;
     }
 
-    public void addTree(char treeSize) {
+    public int totalLemonPerWeek() {
+        int lemonPerWeek = 0;
+
+        for (Tree tree : trees) {
+            lemonPerWeek += tree.lemonPerWeek();
+        }
+
+        return lemonPerWeek;
+    }
+    public void addTree(String treeSize) {
         Tree newTree = new Tree(treeSize);
         if (availableSpace - newTree.getTreeSize() > 0) {
+            trees.add(new Tree(treeSize));
+        } else {
+            makePlotSpace();
             trees.add(new Tree(treeSize));
         }
     }
 
-    public addAndReplaceTree()
+    public void makePlotSpace() {
 
-    public void sellTree() {
+    }
 
+    public void sellTree(int idx) {
+        String treeType = trees.get(idx).getTreeType();
     }
 }
