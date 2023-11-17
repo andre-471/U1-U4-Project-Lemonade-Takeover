@@ -7,12 +7,25 @@ public class Game {
 
     public Game() {
         plots = new ArrayList<Plot>();
-        week = 1;
+        week = 0;
+    }
+
+    public void newPlot() {
+        plots.add(new Plot());
     }
 
     public void newWeek() {
-        if (week > 1) {
-            /* random event method not yet constructed */
-        }
+        week++;
+        randomEvent();
     }
+
+    public void randomEvent() {
+
+    }
+
+    public int totalPlots() {
+        return plots.size();
+    }
+
+
 }
