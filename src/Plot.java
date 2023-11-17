@@ -18,20 +18,21 @@ public class Plot {
 
         return lemonPerWeek;
     }
-    public void addTree(char treeSize) {
+    public void addTree(String treeSize) {
         Tree newTree = new Tree(treeSize);
         if (availableSpace - newTree.getTreeSize() > 0) {
+            trees.add(new Tree(treeSize));
+        } else {
+            makePlotSpace();
             trees.add(new Tree(treeSize));
         }
     }
 
-    public void addAndReplaceTree() {
+    public void makePlotSpace() {
 
     }
 
     public void sellTree(int idx) {
-        char treeType = trees.get(idx).getTreeType();
+        String treeType = trees.get(idx).getTreeType();
     }
-
-    private void decrement
 }
