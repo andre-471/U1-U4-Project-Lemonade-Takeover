@@ -18,6 +18,11 @@ public class Plot {
 
         return lemonPerWeek;
     }
+
+    public int hasSpace() {
+
+    }
+
     public void addTree(String treeSize) {
         Tree newTree = new Tree(treeSize);
         if (availableSpace - newTree.getTreeSize() > 0) {
