@@ -36,7 +36,7 @@ public class GameLogic {
         System.out.print("What kind of tree would you like?: ");
         String userInput = repeatUntil(TREE_CHOICES);
         System.out.print("What plot # do you want to add the tree to?: ");
-        int plotNum = repeatUntil(1, game.totalPlots());
+        int plotNum = repeatUntil(game.totalPlots()); // should always be at least 1
 
     }
 
@@ -63,9 +63,9 @@ public class GameLogic {
         return input;
     }
 
-    private int repeatUntil(int min, int max) {
+    private int repeatUntil(int max) {
         String input = scan.nextLine().trim().toLowerCase();
-        while (!isInt(input) && Integer.parseInt(input) <= min && Integer.parseInt(input) >= max) {
+        while (!isInt(input) && Integer.parseInt(input) <= 1 && Integer.parseInt(input) >= max) {
             input = scan.nextLine().trim().toLowerCase();
             System.out.print("Error please try again: ");
         }
