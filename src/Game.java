@@ -27,5 +27,7 @@ public class Game {
         return plots.size();
     }
 
-
+    public void addTree(int plotNum, String treeType) {
+        plots.get(plotNum).addTree(treeType);
+    }
 }
