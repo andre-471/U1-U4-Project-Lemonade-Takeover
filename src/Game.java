@@ -4,19 +4,30 @@ public class Game {
     private double money;
     private ArrayList<Plot> plots;
     private int week;
-    private GameIO io;
 
     public Game() {
         plots = new ArrayList<Plot>();
-        week = 1;
-        io = new GameIO();
+        week = 0;
+    }
+
+    public void newPlot() {
+        plots.add(new Plot());
     }
 
     public void newWeek() {
-        if (week > 1) {
-            /* random event method not yet constructed */
-        }
-        io.mainMenu();
+        week++;
+        randomEvent();
+    }
 
+    public void randomEvent() {
+
+    }
+
+    public int totalPlots() {
+        return plots.size();
+    }
+
+    public void addTree(int plotNum, String treeType) {
+        plots.get(plotNum).addTree(treeType);
     }
 }
