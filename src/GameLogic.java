@@ -1,9 +1,12 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GameLogic {
     private final String[] USER_CHOICES = new String[]{"trees", "plots", "end week"};
     private final String[] TREE_CHOICES = new String[]{"large", "medium", "small"};
+    private final String[] DIGITS = new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
     private final String[] OPTIONS = new String[]{"y", "n"};
+    private ArrayList<Plot> userPlots = new ArrayList<Plot>();
     private Scanner scan;
     private Game game;
 
@@ -37,11 +40,20 @@ public class GameLogic {
         String userInput = repeatUntil(TREE_CHOICES);
         System.out.print("What plot # do you want to add the tree to?: ");
         int plotNum = repeatUntil(game.totalPlots()); // should always be at least 1
-
+        mainMenu();
     }
 
     public void newPlot() {
-
+        System.out.println("How many plots do you want to buy?: ");
+        int userInput = Integer.parseInt(repeatUntil(DIGITS));
+        if (game.canAffordPlot(userInput)) {
+            for (int i = 1; i < userInput; i++) {
+                userPlots.add(new Plot());
+            }
+        } else {
+            System.out.println("Error, you do not have enough money to buy this many plots.");
+        }
+        mainMenu();
     }
 
     private boolean isInt(String checkingStr) {
