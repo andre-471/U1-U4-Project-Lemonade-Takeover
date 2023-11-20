@@ -19,8 +19,8 @@ public class Plot {
         return lemonPerWeek;
     }
 
-    public int hasSpace() {
-
+    public boolean hasSpace() {
+        return true;
     }
 
     public void addTree(String treeSize) {
@@ -34,6 +34,10 @@ public class Plot {
     }
 
     public void makePlotSpace() {
+
+    }
+
+    public void plotValue() {
 
     }
 

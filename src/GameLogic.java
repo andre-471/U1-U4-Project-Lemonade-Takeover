@@ -45,7 +45,7 @@ public class GameLogic {
         int userInput = repeatUntil(9);
         if (game.canAffordPlot(userInput)) {
             for (int i = 1; i < userInput; i++) {
-                game.newPlot();
+                game.newPlot(userInput);
             }
         } else {
             System.out.println("Error, you do not have enough money to buy this many plots.");

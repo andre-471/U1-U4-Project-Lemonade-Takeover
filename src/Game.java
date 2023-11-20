@@ -4,14 +4,19 @@ public class Game {
     private double money;
     private ArrayList<Plot> plots;
     private int week;
+    private String rank;
 
     public Game() {
+        money = 0.0;
         plots = new ArrayList<Plot>();
         week = 0;
+        rank = "local lemonade store";
     }
 
-    public void newPlot() {
-        plots.add(new Plot());
+    public void newPlot(int amount) {
+        for (int i = 0; i < amount; i++) {
+            plots.add(new Plot());
+        }
     }
 
     public void newWeek() {
@@ -23,12 +28,20 @@ public class Game {
 
     }
 
+    public void updateRank() {
+
+    }
+
+    public boolean plotHasSpace(int plotNum) {
+        return plots.get(plotNum - 1).hasSpace();
+    }
+
     public int totalPlots() {
         return plots.size();
     }
 
     public void addTree(int plotNum, String treeType) {
-        plots.get(plotNum).addTree(treeType);
+        plots.get(plotNum - 1).addTree(treeType);
     }
 
     public boolean canAffordTrees(int amount, String type) {
