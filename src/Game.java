@@ -40,6 +40,17 @@ public class Game {
         return plots.size();
     }
 
+    public int netWorth() {
+        int netWorth = 0;
+        for (Plot plot : plots) {
+            netWorth += plot.plotValue();
+        }
+
+        netWorth += money;
+
+        return netWorth;
+    }
+
     public void addTree(int plotNum, String treeType) {
         plots.get(plotNum - 1).addTree(treeType);
     }

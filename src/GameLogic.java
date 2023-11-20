@@ -10,10 +10,17 @@ public class GameLogic {
     public GameLogic() {
         game = new Game();
         scan = new Scanner(System.in);
+        start();
     }
 
     public void start() {
         System.out.println("backstory");
+    }
+
+    private void gameLoop() {
+        while (!hasWon()) {
+            mainMenu();
+        }
     }
 
     // game goes by week, gives player the option on what to do, random events first
@@ -29,7 +36,6 @@ public class GameLogic {
         } else {
             throw new IllegalStateException("Unexpected value: " + userInput);
         }
-
     }
 
     public void newTree() {
@@ -38,6 +44,10 @@ public class GameLogic {
         System.out.print("What plot # do you want to add the tree to?: ");
         int plotNum = repeatUntil(game.totalPlots()); // should always be at least 1
 
+    }
+
+    private boolean hasWon() {
+        return false;
     }
 
     public void newPlot() {

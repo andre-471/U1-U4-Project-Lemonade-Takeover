@@ -37,8 +37,8 @@ public class Plot {
 
     }
 
-    public void plotValue() {
-
+    public int plotValue() {
+        return 0;
     }
 
     public void sellTree(int idx) {
