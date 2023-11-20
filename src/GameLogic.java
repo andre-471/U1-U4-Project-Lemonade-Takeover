@@ -41,7 +41,15 @@ public class GameLogic {
     }
 
     public void newPlot() {
-
+        System.out.println("How many plots do you want to buy?: ");
+        int userInput = repeatUntil(9);
+        if (game.canAffordPlot(userInput)) {
+            for (int i = 1; i < userInput; i++) {
+                game.newPlot();
+            }
+        } else {
+            System.out.println("Error, you do not have enough money to buy this many plots.");
+        }
     }
 
     private boolean isInt(String checkingStr) {
@@ -81,6 +89,4 @@ public class GameLogic {
         }
         return false;
     }
-
-
 }
