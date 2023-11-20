@@ -33,9 +33,9 @@ public class Game {
 
     public boolean canAffordTrees(int amount, String type) {
         if (type.equals("small")) {
-            return  amount * 10 > money;
+            return (amount * 10) > money;
         } else if (type.equals("medium")) {
-            return amount * 25 > money;
+            return (amount * 25) > money;
         } else {
             return (amount * 50 ) > money; // 10, 25, and 50 are placeholder values for the price of a tree, will liekly be adjusted
         }
