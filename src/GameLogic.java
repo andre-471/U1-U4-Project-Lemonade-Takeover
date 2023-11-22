@@ -41,8 +41,7 @@ public class GameLogic {
         System.out.print("What kind of tree would you like?: ");
         String userInput = repeatUntil(TREE_CHOICES);
         System.out.print("What plot # do you want to add the tree to?: ");
-        int plotNum = repeatUntil(game.totalPlots()); // should always be at least 1
-
+        int plotNum = repeatUntil(game.totalPlots());
     }
 
     private boolean hasWon() {
@@ -51,7 +50,7 @@ public class GameLogic {
 
     public void newPlot() {
         System.out.println("How many plots do you want to buy?: ");
-        int userInput = repeatUntil(9);
+        int userInput = repeatUntil(99);
         if (game.canAffordPlot(userInput)) {
             for (int i = 1; i < userInput; i++) {
                 game.newPlot(userInput);
