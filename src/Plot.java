@@ -20,20 +20,20 @@ public class Plot {
     }
 
     public boolean hasSpace(String treeType) {
-        return availableSpace - new Tree(treeType).getTreeSize() >= 0;
+        return availableSpace - Tree.sizeBasedOnType(treeType) >= 0;
     }
 
-    public void addTree(String treeSize) {
-        Tree newTree = new Tree(treeSize);
+    public void addTree(String treeType) {
+        Tree newTree = new Tree(treeType);
         if (availableSpace - newTree.getTreeSize() > 0) {
-            trees.add(new Tree(treeSize));
+            trees.add(new Tree(treeType));
         } else {
-            makePlotSpace();
-            trees.add(new Tree(treeSize));
+            makePlotSpace(treeType);
+            trees.add(new Tree(treeType));
         }
     }
 
-    public void makePlotSpace() {
+    public void makePlotSpace(String treeType) {
 
     }
 

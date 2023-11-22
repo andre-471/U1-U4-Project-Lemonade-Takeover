@@ -51,6 +51,7 @@ public class GameLogic {
             System.out.println("Which plot would you like to plant it in?: ");
             int userPlotNum = repeatUntil(game.totalPlots()); // should always be at least 1
             if (game.plotHasSpace(userPlotNum, treeType)) {
+                game.addTree(userPlotNum, treeType);
                 System.out.println("Trees have been purchased!");
             } else {
                 System.out.println("Error, space not available in plot");
