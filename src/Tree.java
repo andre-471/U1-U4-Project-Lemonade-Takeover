@@ -23,7 +23,7 @@ public class Tree {
             case "small" -> {
                 treeSize = 7;
                 treeProduction = 5;
-
+                treePrice = 5;
             }
             default -> throw new IllegalStateException("Unexpected value: " + treeType);
         }
