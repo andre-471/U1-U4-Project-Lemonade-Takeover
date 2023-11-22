@@ -73,7 +73,7 @@ public class GameLogic {
         String input = scan.nextLine().trim().toLowerCase();
         while (!objectInArray(strings, input)) {
             input = scan.nextLine().trim().toLowerCase();
-            System.out.print("Error please try again: ");
+            System.out.print("Error, please type in a valid response: ");
         }
 
         return input;
@@ -83,7 +83,7 @@ public class GameLogic {
         String input = scan.nextLine().trim().toLowerCase();
         while (!isInt(input) && Integer.parseInt(input) <= 1 && Integer.parseInt(input) >= max) {
             input = scan.nextLine().trim().toLowerCase();
-            System.out.print("Error please try again: ");
+            System.out.print("Error, please type in an integer less than " + max + ": ");
         }
 
         return Integer.parseInt(input);
