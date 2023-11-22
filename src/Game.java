@@ -24,7 +24,7 @@ public class Game {
         randomEvent();
     }
 
-    public void randomEvent() {
+    private void randomEvent() {
 
     }
 
@@ -38,7 +38,6 @@ public class Game {
     public int totalPlots() {
         return plots.size();
     }
-
     public int netWorth() {
         int netWorth = 0;
         for (Plot plot : plots) {
@@ -54,13 +53,13 @@ public class Game {
         plots.get(plotNum - 1).addTree(treeType);
     }
 
-    public boolean canAffordTrees(int amount, String type) {
-        if (type.equals("small")) {
+    public boolean canAffordTrees(int amount, String treeType) {
+        if (treeType.equals("small")) {
             return (amount * 10) > money;
-        } else if (type.equals("medium")) {
+        } else if (treeType.equals("medium")) {
             return (amount * 25) > money;
         } else {
-            return (amount * 50 ) > money; // 10, 25, and 50 are placeholder values for the price of a tree, will liekly be adjusted
+            return (amount * 50) > money; // 10, 25, and 50 are placeholder values for the price of a tree, will liekly be adjusted
         }
     }
 
