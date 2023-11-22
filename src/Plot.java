@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 public class Plot {
-    private final int PLOTSIZE = 70;
+    public static final int COST = 100;
+    private static final int PLOTSIZE = 70;
     private ArrayList<Tree> trees;
     private int availableSpace;
     public Plot() {
