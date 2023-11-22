@@ -15,6 +15,8 @@ public class GameLogic {
 
     private void start() {
         System.out.println("backstory");
+        game.stats();
+        mainMenu();
     }
 
     private void gameLoop() {
@@ -31,11 +33,13 @@ public class GameLogic {
             case "trees" -> newTree();
             case "plots" -> newPlot();
             case "end week" -> {
+                game.newWeek();
             }
             /* nextWeek() unimplemented method */
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
+
 
     private void newTree() {
         System.out.print("What kind of tree would you like?: ");
