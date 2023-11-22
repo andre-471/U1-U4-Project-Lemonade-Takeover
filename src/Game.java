@@ -32,8 +32,8 @@ public class Game {
 
     }
 
-    public boolean plotHasSpace(int plotNum) {
-        return plots.get(plotNum - 1).hasSpace();
+    public boolean plotHasSpace(int plotNum, String treeType) {
+        return plots.get(plotNum - 1).hasSpace(treeType);
     }
     public int totalPlots() {
         return plots.size();

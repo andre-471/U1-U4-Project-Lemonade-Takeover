@@ -39,15 +39,14 @@ public class GameLogic {
 
     private void newTree() {
         System.out.print("What kind of tree would you like?: ");
-        String userInput = repeatUntil(TREE_CHOICES);
+        String treeType = repeatUntil(TREE_CHOICES);
         System.out.print("How many trees would you like to purchase?: ");
         // make an if statement checking for which tree choice it is to decide the max num of trees allowed
         int amountWanted = repeatUntil(10);
-        if (game.canAffordTrees(amountWanted, userInput)) {
+        if (game.canAffordTrees(amountWanted, treeType)) {
             System.out.println("Which plot would you like to plant it in?: ");
-            int maxPlotNum = repeatUntil(game.totalPlots()); // should always be at least 1
-            int userPlotNum = repeatUntil(maxPlotNum);
-            if (game.plotHasSpace(userPlotNum)) {
+            int userPlotNum = repeatUntil(game.totalPlots()); // should always be at least 1
+            if (game.plotHasSpace(userPlotNum, treeType)) {
                 System.out.println("Trees have been purchased!");
             } else {
                 System.out.println("Error, space not available in plot");
@@ -61,7 +60,7 @@ public class GameLogic {
 
     private void newPlot() {
         System.out.println("How many plots do you want to buy?: ");
-        int userInput = repeatUntil(9);
+        int userInput = repeatUntil(99);
         if (game.canAffordPlot(userInput)) {
             for (int i = 1; i < userInput; i++) {
                 game.newPlot(userInput);
@@ -84,7 +83,7 @@ public class GameLogic {
         String input = scan.nextLine().trim().toLowerCase();
         while (!objectInArray(strings, input)) {
             input = scan.nextLine().trim().toLowerCase();
-            System.out.print("Error please try again: ");
+            System.out.print("Error, please type in a valid response: ");
         }
 
         return input;
@@ -94,7 +93,7 @@ public class GameLogic {
         String input = scan.nextLine().trim().toLowerCase();
         while (!isInt(input) && Integer.parseInt(input) <= 1 && Integer.parseInt(input) >= max) {
             input = scan.nextLine().trim().toLowerCase();
-            System.out.print("Error please try again: ");
+            System.out.print("Error, please type in an integer less than " + max + ": ");
         }
 
         return Integer.parseInt(input);
