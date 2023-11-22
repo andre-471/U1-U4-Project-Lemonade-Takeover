@@ -54,16 +54,10 @@ public class Game {
     }
 
     public boolean canAffordTrees(int amount, String treeType) {
-        if (treeType.equals("small")) {
-            return (amount * 10) > money;
-        } else if (treeType.equals("medium")) {
-            return (amount * 25) > money;
-        } else {
-            return (amount * 50) > money; // 10, 25, and 50 are placeholder values for the price of a tree, will liekly be adjusted
-        }
+        return Tree.costBasedOnType(treeType) * amount > money;
     }
 
     public boolean canAffordPlot(int amount) {
-        return amount * 100 > money; // 100 placeholder value for price of a plot, will liely be adjusted
+        return amount * Plot.COST > money; // 100 placeholder value for price of a plot, will liely be adjusted
     }
 }
