@@ -22,7 +22,15 @@ public class Game {
     public void newWeek() {
         week++;
         randomEvent();
+        stats();
+        money += MoneyPerWeek();
     }
+
+    public String stats() {
+        return "--- Week " + week + " ---\nRank: " + rank + "\nMoney: $" + money + "\nPlots: " + plots;
+    }
+
+
 
     public void randomEvent() {
 
@@ -67,4 +75,13 @@ public class Game {
     public boolean canAffordPlot(int amount) {
         return amount * 100 > money; // 100 placeholder value for price of a plot, will liely be adjusted
     }
+
+    public int MoneyPerWeek() {
+        int moneyGen = 0;
+        for (Plot plot : plots) {
+            moneyGen += plot.totalLemonPerWeek();
+        }
+        return moneyGen;
+    }
+
 }
