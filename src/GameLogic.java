@@ -39,15 +39,14 @@ public class GameLogic {
 
     private void newTree() {
         System.out.print("What kind of tree would you like?: ");
-        String userInput = repeatUntil(TREE_CHOICES);
+        String treeType = repeatUntil(TREE_CHOICES);
         System.out.print("How many trees would you like to purchase?: ");
         // make an if statement checking for which tree choice it is to decide the max num of trees allowed
         int amountWanted = repeatUntil(10);
-        if (game.canAffordTrees(amountWanted, userInput)) {
+        if (game.canAffordTrees(amountWanted, treeType)) {
             System.out.println("Which plot would you like to plant it in?: ");
-            int maxPlotNum = repeatUntil(game.totalPlots()); // should always be at least 1
-            int userPlotNum = repeatUntil(maxPlotNum);
-            if (game.plotHasSpace(userPlotNum)) {
+            int userPlotNum = repeatUntil(game.totalPlots()); // should always be at least 1
+            if (game.plotHasSpace(userPlotNum, treeType)) {
                 System.out.println("Trees have been purchased!");
             } else {
                 System.out.println("Error, space not available in plot");
