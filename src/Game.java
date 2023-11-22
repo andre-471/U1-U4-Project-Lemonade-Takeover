@@ -35,7 +35,6 @@ public class Game {
     public boolean plotHasSpace(int plotNum) {
         return plots.get(plotNum - 1).hasSpace();
     }
-
     public int totalPlots() {
         return plots.size();
     }

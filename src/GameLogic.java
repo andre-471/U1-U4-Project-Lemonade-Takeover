@@ -13,7 +13,7 @@ public class GameLogic {
         start();
     }
 
-    public void start() {
+    private void start() {
         System.out.println("backstory");
     }
 
@@ -24,7 +24,7 @@ public class GameLogic {
     }
 
     // game goes by week, gives player the option on what to do, random events first
-    public void mainMenu() {
+    private void mainMenu() {
         System.out.println("$money -- #plots -- #trees\nbuy trees\nbuy plots\nend week");
         String userInput = repeatUntil(MENU_CHOICES);
         switch (userInput) {
@@ -37,18 +37,29 @@ public class GameLogic {
         }
     }
 
-    public void newTree() {
+    private void newTree() {
         System.out.print("What kind of tree would you like?: ");
         String userInput = repeatUntil(TREE_CHOICES);
-        System.out.print("What plot # do you want to add the tree to?: ");
-        int plotNum = repeatUntil(game.totalPlots());
+        System.out.print("How many trees would you like to purchase?: ");
+        // make an if statement checking for which tree choice it is to decide the max num of trees allowed
+        int amountWanted = repeatUntil(10);
+        if (game.canAffordTrees(amountWanted, userInput)) {
+            System.out.println("Which plot would you like to plant it in?: ");
+            int maxPlotNum = repeatUntil(game.totalPlots()); // should always be at least 1
+            int userPlotNum = repeatUntil(maxPlotNum);
+            if (game.plotHasSpace(userPlotNum)) {
+                System.out.println("Trees have been purchased!");
+            } else {
+                System.out.println("Error, space not available in plot");
+            }
+        }
     }
 
     private boolean hasWon() {
         return false;
     }
 
-    public void newPlot() {
+    private void newPlot() {
         System.out.println("How many plots do you want to buy?: ");
         int userInput = repeatUntil(99);
         if (game.canAffordPlot(userInput)) {
