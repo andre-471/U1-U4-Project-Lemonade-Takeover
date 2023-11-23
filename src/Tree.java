@@ -59,6 +59,10 @@ public class Tree {
         return treeType;
     }
 
+    public int getTreePrice() {
+        return treePrice;
+    }
+
     public int lemonPerWeek() {
         return treeProduction;
     }
