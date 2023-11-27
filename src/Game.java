@@ -70,7 +70,7 @@ public class Game {
     public int MoneyPerWeek() {
         int moneyGen = 0;
         for (Plot plot : plots) {
-            moneyGen += plot.totalLemonPerWeek();
+            moneyGen += plot.totalLemonadePerWeek();
         }
         return moneyGen;
     }
