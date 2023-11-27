@@ -33,7 +33,7 @@ public class Plot {
         int lemonPerWeek = 0;
 
         for (Tree tree : trees) {
-            lemonPerWeek += tree.lemonPerWeek();
+            lemonPerWeek += tree.lemonadePerWeek();
         }
 
         return lemonPerWeek;
