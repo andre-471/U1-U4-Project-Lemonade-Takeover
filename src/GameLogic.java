@@ -65,11 +65,9 @@ public class GameLogic {
 
     private void newPlot() {
         System.out.print("How many plots do you want to buy?: ");
-        int userInput = repeatUntil(99);
-        if (game.canAffordPlot(userInput)) {
-            for (int i = 1; i < userInput; i++) {
-                game.newPlot(userInput);
-            }
+        int amount = repeatUntil(99);
+        if (game.canAffordPlots(amount)) {
+            game.newPlot(amount);
         } else {
             System.out.println("Error, you do not have enough money to buy this many plots.");
         }

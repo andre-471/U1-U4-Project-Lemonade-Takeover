@@ -63,7 +63,7 @@ public class Game {
         return Tree.costBasedOnType(treeType) * amount > money;
     }
 
-    public boolean canAffordPlot(int amount) {
+    public boolean canAffordPlots(int amount) {
         return amount * Plot.COST > money; // 100 placeholder value for price of a plot, will liely be adjusted
     }
 
