@@ -94,7 +94,7 @@ public class GameLogic {
 
     private int repeatUntil(int max) {
         String input = scan.nextLine().trim().toLowerCase();
-        while (!isInt(input) && Integer.parseInt(input) <= 1 && Integer.parseInt(input) >= max) {
+        while (!isInt(input) || Integer.parseInt(input) <= 1 || Integer.parseInt(input) >= max) {
             System.out.print("Error, please type in an integer less than " + max + ": ");
             input = scan.nextLine().trim().toLowerCase();
         }

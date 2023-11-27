@@ -15,7 +15,7 @@ public class Game {
 
     public void newPlot(int amount) {
         for (int i = 0; i < amount; i++) {
-            plots.add(new Plot());
+            plots.add(new Plot()); // subtract money
         }
     }
 
@@ -60,11 +60,11 @@ public class Game {
     }
 
     public boolean canAffordTrees(int amount, String treeType) {
-        return Tree.costBasedOnType(treeType) * amount > money;
+        return money > Tree.costBasedOnType(treeType) * amount;
     }
 
     public boolean canAffordPlots(int amount) {
-        return amount * Plot.COST > money; // 100 placeholder value for price of a plot, will liely be adjusted
+        return money > amount * Plot.COST; // 100 placeholder value for price of a plot, will liely be adjusted
     }
 
     public int MoneyPerWeek() {
