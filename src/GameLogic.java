@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class GameLogic {
-    private final String[] MENU_CHOICES = new String[]{"trees", "plots", "end week"};
+    private final String[] MENU_CHOICES = new String[]{"trees", "plots", "end week"}; // update with stats
     private final String[] TREE_CHOICES = new String[]{"large", "medium", "small"};
     private final String[] OPTIONS = new String[]{"y", "n"};
     private Scanner scan;
@@ -26,16 +26,16 @@ public class GameLogic {
 
     // game goes by week, gives player the option on what to do, random events first
     private void mainMenu() {
-        System.out.println("$money -- #plots -- #trees\nbuy trees\nbuy plots\nend week");
+        System.out.print("What would you like to do?\nType \"trees\" to buy trees\nType \"plots\" to buy plots\nType \"stats\" to see your current stats\n" +
+                "Or \"end week\" to finish the week\ninput: ");
         String userInput = repeatUntil(MENU_CHOICES);
         switch (userInput) {
             case "trees" -> newTree();
             case "plots" -> newPlot();
+            case "stats" -> System.out.println(game.stats());
             case "end week" -> {
                 game.newWeek();
             }
-            case "stats" -> System.out.println(game.stats());
-            /* nextWeek() unimplemented method */
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
     }
