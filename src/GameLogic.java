@@ -15,8 +15,7 @@ public class GameLogic {
 
     private void start() {
         System.out.println("backstory");
-        game.stats();
-        mainMenu();
+        gameLoop();
     }
 
     private void gameLoop() {
@@ -35,6 +34,7 @@ public class GameLogic {
             case "end week" -> {
                 game.newWeek();
             }
+            case "stats" -> System.out.println(game.stats());
             /* nextWeek() unimplemented method */
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
         }
@@ -48,7 +48,7 @@ public class GameLogic {
         // make an if statement checking for which tree choice it is to decide the max num of trees allowed
         int amountWanted = repeatUntil(10);
         if (game.canAffordTrees(amountWanted, treeType)) {
-            System.out.println("Which plot would you like to plant it in?: ");
+            System.out.print("Which plot would you like to plant it in?: ");
             int userPlotNum = repeatUntil(game.totalPlots()); // should always be at least 1
             if (game.plotHasSpace(userPlotNum, treeType)) {
                 game.addTree(userPlotNum, treeType);
@@ -64,7 +64,7 @@ public class GameLogic {
     }
 
     private void newPlot() {
-        System.out.println("How many plots do you want to buy?: ");
+        System.out.print("How many plots do you want to buy?: ");
         int amount = repeatUntil(99);
         if (game.canAffordPlots(amount)) {
             game.newPlot(amount);
