@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 public class Plot {
-    private final int PLOTSIZE = 70;
+    public static final int COST = 100;
+    private static final int PLOTSIZE = 70;
     private ArrayList<Tree> trees;
     private int availableSpace;
     public Plot() {
@@ -25,7 +26,7 @@ public class Plot {
 
     public void addTree(String treeType) {
         Tree newTree = new Tree(treeType);
-        if (availableSpace - newTree.getTreeSize() > 0) {
+        if (hasSpace(treeType)) {
             trees.add(new Tree(treeType));
         } else {
             makePlotSpace(treeType);
@@ -34,11 +35,16 @@ public class Plot {
     }
 
     public void makePlotSpace(String treeType) {
-
+        // hard to implement wow
     }
 
     public int plotValue() {
-        return 0;
+        int plotValue = 0;
+        for (Tree tree : trees) {
+            plotValue += tree.getTreePrice();
+        }
+
+        return plotValue
     }
 
     public void sellTree(int idx) {

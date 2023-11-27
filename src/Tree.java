@@ -1,12 +1,10 @@
-import java.util.List;
-
 public class Tree {
-    public static int TREE_SIZE_L = 14;
-    public static int TREE_SIZE_M = 10;
-    public static int TREE_SIZE_S = 7;
-    public static int TREE_COST_L = 1000;
-    public static int TREE_COST_M = 50;
-    public static int TREE_COST_S = 5;
+    private static final int TREE_SIZE_L = 14;
+    private static final int TREE_SIZE_M = 10;
+    private static final int TREE_SIZE_S = 7;
+    private static final int TREE_COST_L = 1000;
+    private static final int TREE_COST_M = 50;
+    private static final int TREE_COST_S = 5;
     private String treeType;
     private int treeSize;
     private int treeProduction;
@@ -24,37 +22,33 @@ public class Tree {
             case "medium" -> {
                 treeSize = TREE_SIZE_M;
                 treeProduction = 20;
-                treePrice = 50;
+                treePrice = TREE_COST_M;
             }
             case "small" -> {
-                treeSize = 7;
+                treeSize = TREE_SIZE_S;
                 treeProduction = 5;
-                treePrice = 5;
+                treePrice = TREE_COST_S;
             }
             default -> throw new IllegalStateException("Unexpected value: " + treeType);
         }
     }
 
     public static int sizeBasedOnType(String treeType) {
-//        switch (treeType) {
-//            case "large" -> {
-//                treeSize = 14;
-//                treeProduction = 45;
-//                treePrice = 1000;
-//            }
-//            case "medium" -> {
-//                treeSize = 10;
-//                treeProduction = 20;
-//                treePrice = 50;
-//            }
-//            case "small" -> {
-//                treeSize = 7;
-//                treeProduction = 5;
-//                treePrice = 5;
-//            }
-//            default -> throw new IllegalStateException("Unexpected value: " + treeType);
-//        }
-        return 0;
+        return switch (treeType) {
+            case "large" -> TREE_SIZE_L;
+            case "medium" -> TREE_SIZE_M;
+            case "small" -> TREE_SIZE_S;
+            default -> throw new IllegalStateException("Unexpected value: " + treeType);
+        };
+    }
+
+    public static int costBasedOnType(String treeType) {
+        return switch (treeType) {
+            case "large" -> TREE_COST_L;
+            case "medium" -> TREE_COST_M;
+            case "small" -> TREE_COST_S;
+            default -> throw new IllegalStateException("Unexpected value: " + treeType);
+        };
     }
 
     public int getTreeSize() {
@@ -63,6 +57,10 @@ public class Tree {
 
     public String getTreeType() {
         return treeType;
+    }
+
+    public int getTreePrice() {
+        return treePrice;
     }
 
     public int lemonPerWeek() {
