@@ -65,11 +65,9 @@ public class GameLogic {
 
     private void newPlot() {
         System.out.println("How many plots do you want to buy?: ");
-        int userInput = repeatUntil(99);
-        if (game.canAffordPlot(userInput)) {
-            for (int i = 1; i < userInput; i++) {
-                game.newPlot(userInput);
-            }
+        int amount = repeatUntil(99);
+        if (game.canAffordPlots(amount)) {
+            game.newPlot(amount);
         } else {
             System.out.println("Error, you do not have enough money to buy this many plots.");
         }
@@ -87,8 +85,8 @@ public class GameLogic {
     private String repeatUntil(String[] strings) {
         String input = scan.nextLine().trim().toLowerCase();
         while (!objectInArray(strings, input)) {
-            input = scan.nextLine().trim().toLowerCase();
             System.out.print("Error, please type in a valid response: ");
+            input = scan.nextLine().trim().toLowerCase();
         }
 
         return input;
@@ -97,8 +95,8 @@ public class GameLogic {
     private int repeatUntil(int max) {
         String input = scan.nextLine().trim().toLowerCase();
         while (!isInt(input) && Integer.parseInt(input) <= 1 && Integer.parseInt(input) >= max) {
-            input = scan.nextLine().trim().toLowerCase();
             System.out.print("Error, please type in an integer less than " + max + ": ");
+            input = scan.nextLine().trim().toLowerCase();
         }
 
         return Integer.parseInt(input);
