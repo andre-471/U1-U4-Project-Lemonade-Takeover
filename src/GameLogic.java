@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class GameLogic {
-    private final String[] MENU_CHOICES = new String[]{"trees", "plots", "end week", "stats"};
     private final String[] TREE_CHOICES = new String[]{"large", "medium", "small"};
     private final String[] OPTIONS = new String[]{"y", "n"};
     private Scanner scan;
@@ -29,16 +28,16 @@ public class GameLogic {
         System.out.println(game.stats()); // testing !!
 
         System.out.println("$money -- #plots -- #trees\nbuy trees\nbuy plots\nend week");
-        String userInput = repeatUntil(MENU_CHOICES);
+        String userInput = scan.nextLine().trim().toLowerCase();
         switch (userInput) {
             case "trees" -> newTree();
             case "plots" -> newPlot();
+            case "stats" -> System.out.println(game.stats());
             case "end week" -> {
                 game.newWeek();
             }
-            case "stats" -> System.out.println(game.stats());
             /* nextWeek() unimplemented method */
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
+            default -> System.out.println("Not a valid response.");
         }
     }
 

@@ -24,6 +24,10 @@ public class Plot {
         availableSpace = SIZE;
     }
 
+    public static int maxTreesInPlot(String treeType) {
+        return SIZE / Tree.sizeBasedOnType(treeType);
+    }
+
     /**
      * Method that returns the total lemonade production
      *
