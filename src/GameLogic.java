@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class GameLogic {
-    private final String[] MENU_CHOICES = new String[]{"trees", "plots", "end week"};
+    private final String[] MENU_CHOICES = new String[]{"trees", "plots", "end week", "stats"};
     private final String[] TREE_CHOICES = new String[]{"large", "medium", "small"};
     private final String[] OPTIONS = new String[]{"y", "n"};
     private Scanner scan;
@@ -26,6 +26,8 @@ public class GameLogic {
 
     // game goes by week, gives player the option on what to do, random events first
     private void mainMenu() {
+        System.out.println(game.stats()); // testing !!
+
         System.out.println("$money -- #plots -- #trees\nbuy trees\nbuy plots\nend week");
         String userInput = repeatUntil(MENU_CHOICES);
         switch (userInput) {
@@ -45,18 +47,22 @@ public class GameLogic {
         System.out.print("What kind of tree would you like?: ");
         String treeType = repeatUntil(TREE_CHOICES);
         System.out.print("How many trees would you like to purchase?: ");
-        // make an if statement checking for which tree choice it is to decide the max num of trees allowed
+
         int amountWanted = repeatUntil(10);
-        if (game.canAffordTrees(amountWanted, treeType)) {
-            System.out.print("Which plot would you like to plant it in?: ");
-            int userPlotNum = repeatUntil(game.totalPlots()); // should always be at least 1
-            if (game.plotHasSpace(userPlotNum, treeType)) {
-                game.addTree(userPlotNum, treeType);
-                System.out.println("Trees have been purchased!");
-            } else {
-                System.out.println("Error, space not available in plot");
-            }
+        if (!game.canAffordTrees(treeType, amountWanted)) {
+            System.out.println("You cannot afford " + amountWanted + " trees.");
+            return;
         }
+
+        System.out.print("Which plot would you like to plant it in?: ");
+        int userPlotNum = repeatUntil(game.totalPlots()); // should always be at least 1
+        if (!game.plotHasSpace(userPlotNum, treeType, amountWanted)) {
+            System.out.println("Error, space not available in plot");
+            return;
+        }
+
+        game.addTree(userPlotNum, treeType, amountWanted);
+        System.out.println("Trees have been purchased!");
     }
 
     private boolean hasWon() {
@@ -94,8 +100,8 @@ public class GameLogic {
 
     private int repeatUntil(int max) {
         String input = scan.nextLine().trim().toLowerCase();
-        while (!isInt(input) && Integer.parseInt(input) <= 1 && Integer.parseInt(input) >= max) {
-            System.out.print("Error, please type in an integer less than " + max + ": ");
+        while (!isInt(input) || Integer.parseInt(input) < 1 || Integer.parseInt(input) > max) {
+            System.out.print("Error, please type in an non-negative integer less than or equal to " + max + ": ");
             input = scan.nextLine().trim().toLowerCase();
         }
 

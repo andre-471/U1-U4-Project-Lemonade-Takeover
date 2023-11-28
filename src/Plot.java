@@ -10,7 +10,7 @@ public class Plot {
     public static final int COST = 100;
 
     /** The size of a plot */
-    private static final int PLOTSIZE = 70;
+    private static final int SIZE = 70;
 
     /** A list of trees on the plot */
     private ArrayList<Tree> trees;
@@ -21,7 +21,7 @@ public class Plot {
     /** Instantiates a Plot object. */
     public Plot() {
         trees = new ArrayList<Tree>();
-        availableSpace = PLOTSIZE;
+        availableSpace = SIZE;
     }
 
     /**
@@ -40,14 +40,15 @@ public class Plot {
     }
 
     /**
-     * Method that checks if the plot has space given the type of a tree
+     * Method that checks if the plot has space given the amount of a type of tree
      * <p>
      * PRECONDITION: treeType is lowercase
      *
      * @param treeType Type of some kind of tree
+     * @param amount Amount of that kind of tree
      * @return If the plot has space to store a tree of that type
      */
-    public boolean hasSpace(String treeType) {
+    public boolean hasSpace(String treeType, int amount) {
         return availableSpace - Tree.sizeBasedOnType(treeType) >= 0;
     }
 
@@ -55,13 +56,10 @@ public class Plot {
      * Method that adds a tree to the plot
      *
      * @param treeType Type of some kind of tree
+     * @param amount Amount of that kind of tree
      */
-    public void addTree(String treeType) {
-        Tree newTree = new Tree(treeType);
-        if (hasSpace(treeType)) {
-            trees.add(new Tree(treeType));
-        } else {
-            makePlotSpace(treeType);
+    public void addTree(String treeType, int amount) {
+        for (int i = 0; i < amount; i++) {
             trees.add(new Tree(treeType));
         }
     }
@@ -70,9 +68,10 @@ public class Plot {
      * Method that makes plot space for a tree given a tree type
      *
      * @param treeType Type of some kind of tree
+     * @param amount Amount of that kind of tree
      */
-    public void makePlotSpace(String treeType) {
-        // hard to implement wow
+    public void makePlotSpace(String treeType, int amount) {
+
     }
 
     /**
