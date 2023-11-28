@@ -47,8 +47,15 @@ public class GameLogic {
         System.out.print("What kind of tree would you like?: ");
         String treeType = repeatUntil(TREE_CHOICES);
         System.out.print("How many trees would you like to purchase?: ");
+        int amountWanted = 0;
+        switch (treeType) {
+            case "large" -> amountWanted = repeatUntil(5);
+            case "medium" -> amountWanted = repeatUntil(7);
+            case "small" -> amountWanted = repeatUntil(10);
 
-        int amountWanted = repeatUntil(10);
+            default -> throw new IllegalStateException("Unexpected value:" + treeType);
+        }
+
         if (!game.canAffordTrees(treeType, amountWanted)) {
             System.out.println("You cannot afford " + amountWanted + " trees.");
             return;

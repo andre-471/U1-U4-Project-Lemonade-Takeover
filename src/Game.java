@@ -28,11 +28,12 @@ public class Game {
     }
 
     public String stats() {
-        return "--- Week " + week + " ---\nRank: " + rank + "\nMoney: $" + money + "\nPlots: " + plots;
+        return "--- Week " + week + " ---\nRank: " + rank + "\nMoney: $" + money + "\nPlots: " + totalPlots();
     }
 
 
     private void randomEvent() {
+        // it will make a random number, depending on that number it
     }
 
     public void updateRank() {
