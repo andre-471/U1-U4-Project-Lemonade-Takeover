@@ -26,7 +26,7 @@ public class GameLogic {
     // game goes by week, gives player the option on what to do, random events first
     private void mainMenu() {
         System.out.println(game.stats()); // testing !!
-
+        System.out.println(game.getAllPlotTrees());
         System.out.print("What would you like to do?\nType \"trees\" to buy trees\nType \"plots\" to buy plots\nType \"stats\" to see your current stats\n" +
                 "Or \"end week\" to finish the week\ninput: ");
         String userInput = scan.nextLine().trim().toLowerCase();
@@ -37,7 +37,7 @@ public class GameLogic {
             case "end week" -> {
                 game.newWeek();
             }
-            default -> throw new IllegalStateException("Unexpected value: " + userInput);
+            default -> throw new IllegalStateException("Unexpected value: " + userInput); // use repeatuntil fucker
         }
     }
 
@@ -48,9 +48,9 @@ public class GameLogic {
         System.out.print("How many trees would you like to purchase?: ");
         int amountWanted = 0;
         switch (treeType) {
-            case "large" -> amountWanted = repeatUntil(5);
-            case "medium" -> amountWanted = repeatUntil(7);
             case "small" -> amountWanted = repeatUntil(10);
+            case "medium" -> amountWanted = repeatUntil(7);
+            case "large" -> amountWanted = repeatUntil(5);
 
             default -> throw new IllegalStateException("Unexpected value:" + treeType);
         }

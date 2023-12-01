@@ -40,6 +40,20 @@ public class Game {
 
     }
 
+    public String getPlotTrees(int plotNum) {
+        return plots.get(plotNum - 1).listTrees();
+    }
+
+    public String getAllPlotTrees() {
+        String l = "";
+        for (int i = 0, j = plots.size(); i < j; i++) {
+            l += getPlotTrees(i + 1);
+            l += "\n";
+        }
+
+        return l;
+    }
+
     public boolean plotHasSpace(int plotNum, String treeType, int amount) {
         return plots.get(plotNum - 1).hasSpace(treeType, amount);
     }
