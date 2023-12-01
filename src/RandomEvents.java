@@ -18,11 +18,11 @@ public class RandomEvents {
     }
     public String randomEventProcessor(String userChoice) {
         return switch (event) {
-            case 1 -> randomEvent1End(userChoice); // make a method that returns how much money should be changed by this
-            case 2 -> randomEvent2End(userChoice);
-            case 3 -> randomEvent3End(userChoice);
-            case 4 -> randomEvent4End(userChoice);
-            case 5 -> randomEvent5End(userChoice);
+            case 1 -> proccessRandomEvent1(userChoice); // make a method that returns how much money should be changed by this
+            case 2 -> proccessRandomEvent2(userChoice);
+            case 3 -> proccessRandomEvent3(userChoice);
+            case 4 -> proccessRandomEvent4(userChoice);
+            case 5 -> proccessRandomEvent5(userChoice);
             default -> throw new RuntimeException("error processing event");
         };
     }

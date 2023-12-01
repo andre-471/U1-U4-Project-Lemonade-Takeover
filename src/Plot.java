@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * This class represents a plot of lemonade trees, with methods to manage those trees
@@ -94,12 +95,10 @@ public class Plot {
 
         int[] treeCount = countTrees(); // small medium large
 
-//        int smallTreesNeeded = treesToClear("small", spaceToMake);
-//        int mediumTreesNeeded = treesToClear("medium", spaceToMake);
-//        int largeTreesNeeded = treesToClear("large", spaceToMake);
+        int[] treesNeeded = treesToClear(spaceToMake);
 
-//        if
-    }
+
+    };
 
     /**
      * Method that returns plot's value
@@ -123,12 +122,15 @@ public class Plot {
     public void sellTree(int idx) {
         String treeType = trees.get(idx).getTreeType();
     }
-    private int treesToClear(String treeType, int plotSpace) {
-        double trees = (double) plotSpace / Tree.sizeBasedOnType(treeType);
 
-        if (trees - (int) trees == 0.0) { return (int) trees; }
+    private int[] treesToClear(int plotSpace) {
+        int[] treesNeeded = new int[3];
 
-        return (int) trees + 1;
+        treesNeeded[0] = (int) Math.nextUp((double) plotSpace / Tree.sizeBasedOnType("small"));
+        treesNeeded[1] = (int) Math.nextUp((double) plotSpace / Tree.sizeBasedOnType("medium"));
+        treesNeeded[2] = (int) Math.nextUp((double) plotSpace / Tree.sizeBasedOnType("large"));
+
+        return treesNeeded;
     }
 
     private int[] countTrees() {
