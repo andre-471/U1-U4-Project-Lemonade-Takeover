@@ -24,6 +24,10 @@ public class Plot {
         availableSpace = SIZE;
     }
 
+    public static int maxTreesInPlot(String treeType) {
+        return SIZE / Tree.sizeBasedOnType(treeType);
+    }
+
     /**
      * Method that returns the total lemonade production
      *
@@ -53,15 +57,30 @@ public class Plot {
     }
 
     /**
-     * Method that adds a tree to the plot
+     * Method that adds a tree to the plot while preserving order based on treeSize
      *
      * @param treeType Type of some kind of tree
      * @param amount Amount of that kind of tree
      */
     public void addTree(String treeType, int amount) {
+        int treeSize = Tree.sizeBasedOnType(treeType);
+        int closestTreeIdx = treeSizeBinarySearch(treeSize);
+
         for (int i = 0; i < amount; i++) {
-            trees.add(new Tree(treeType));
+            trees.add(closestTreeIdx, new Tree(treeType));
+            availableSpace -= Tree.sizeBasedOnType(treeType);
         }
+    }
+
+    public String listTrees() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (Tree tree : trees) {
+            stringBuilder.append(tree.getTreeSize());
+            stringBuilder.append(" ");
+        }
+
+        return stringBuilder.toString();
     }
 
     /**
@@ -71,7 +90,15 @@ public class Plot {
      * @param amount Amount of that kind of tree
      */
     public void makePlotSpace(String treeType, int amount) {
+        int spaceToMake = Tree.sizeBasedOnType(treeType) * amount;
 
+        int[] treeCount = countTrees(); // small medium large
+
+//        int smallTreesNeeded = treesToClear("small", spaceToMake);
+//        int mediumTreesNeeded = treesToClear("medium", spaceToMake);
+//        int largeTreesNeeded = treesToClear("large", spaceToMake);
+
+//        if
     }
 
     /**
@@ -95,5 +122,47 @@ public class Plot {
      */
     public void sellTree(int idx) {
         String treeType = trees.get(idx).getTreeType();
+    }
+    private int treesToClear(String treeType, int plotSpace) {
+        double trees = (double) plotSpace / Tree.sizeBasedOnType(treeType);
+
+        if (trees - (int) trees == 0.0) { return (int) trees; }
+
+        return (int) trees + 1;
+    }
+
+    private int[] countTrees() {
+        int[] treeCount = new int[3];
+
+        for (Tree tree : trees) {
+            switch (tree.getTreeType()) {
+                case "small" -> treeCount[0]++;
+                case "medium" -> treeCount[1]++;
+                case "large" -> treeCount[2]++;
+                default -> throw new IllegalStateException("Unexpected value: " + tree.getTreeType());
+            }
+        }
+        return treeCount;
+    }
+
+    private int treeSizeBinarySearch(int treeSize) { // supports search for nearest number
+        if (trees.isEmpty()) { return 0; }
+
+        int high = trees.size() - 1, mid = high / 2, low = 0;
+        while (low <= high) {
+            int currSize = trees.get(mid).getTreeSize();
+
+            if (treeSize < currSize) {
+                high = mid - 1;
+            } else if (treeSize > currSize) {
+                low = mid + 1;
+            } else {
+                return mid;
+            }
+                mid = low + (high - low) / 2;
+        }
+
+        return mid;
+
     }
 }
