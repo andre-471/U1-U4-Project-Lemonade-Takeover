@@ -22,8 +22,6 @@ public class Game {
 
     public void newWeek() {
         week++;
-        randomEvent();
-        stats();
         money += MoneyPerWeek();
     }
 
@@ -31,10 +29,6 @@ public class Game {
         return "--- Week " + week + " ---\nRank: " + rank + "\nMoney: $" + money + "\nPlots: " + totalPlots();
     }
 
-
-    private void randomEvent() {
-        // it will make a random number, depending on that number it
-    }
 
     public void updateRank() {
 
@@ -78,5 +72,4 @@ public class Game {
         }
         return moneyGen;
     }
-
 }

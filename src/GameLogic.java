@@ -6,6 +6,7 @@ public class GameLogic {
     private final String[] OPTIONS = new String[]{"y", "n"};
     private Scanner scan;
     private Game game;
+    private RandomEvents events;
 
     public GameLogic() {
         game = new Game();
