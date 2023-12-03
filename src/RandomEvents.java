@@ -1,12 +1,17 @@
 public class RandomEvents {
     int event;
     boolean win; // to make decide if method adds or takes away money
-    public RandomEvents() {
+    boolean lastWeekEvent;
+    public RandomEvents(boolean lastWeekEvent) {
         event = 0;
         win = false;
+        this.lastWeekEvent = lastWeekEvent;
     }
 
     public String randomEventChooser() {
+        if (lastWeekEvent) {
+            return "";
+        }
         int num = (int)(Math.random() * 10);
         return switch (num) {
             case 1 -> randomEvent1();
@@ -18,6 +23,9 @@ public class RandomEvents {
         };
     }
     public boolean newEvent() {
+        if (lastWeekEvent) {
+            return false;
+        }
         return event > 0;
     }
     public String randomEventProcessor(String userChoice) {

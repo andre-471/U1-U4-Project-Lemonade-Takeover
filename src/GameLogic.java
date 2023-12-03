@@ -6,12 +6,13 @@ public class GameLogic {
     private final String[] OPTIONS = new String[]{"yes", "no"};
     private Scanner scan;
     private Game game;
-    private RandomEvents events;
+    private boolean lastWeekEvent;
 
     public GameLogic() {
         game = new Game();
         scan = new Scanner(System.in);
-        events = new RandomEvents();
+        lastWeekEvent = false;
+        // events = new RandomEvents();
         start();
     }
 
@@ -39,14 +40,18 @@ public class GameLogic {
             case "stats" -> System.out.println(game.stats());
             case "end week" -> {
                 System.out.println();
+                RandomEvents events = new RandomEvents(lastWeekEvent);
                 System.out.print(events.randomEventChooser());
                 if (events.newEvent()) {
                     userInput = repeatUntil(OPTIONS);
-                    if (userInput.equals("yes"))
+                    if (userInput.compareTo("yes") == 0)
                     {
                         System.out.println(events.randomEventProcessor(userInput) + "\n");
                         game.moneyAfterEvent(events.moneyChange());
                     }
+                    lastWeekEvent = true;
+                } else {
+                    lastWeekEvent = false;
                 }
                 game.newWeek();
             }
