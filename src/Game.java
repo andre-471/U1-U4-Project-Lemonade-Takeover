@@ -9,6 +9,7 @@ public class Game {
     public Game() {
         money = 10000;
         plots = new ArrayList<Plot>();
+        plots.add(new Plot());
         week = 0;
         rank = "local lemonade store";
     }
@@ -71,5 +72,17 @@ public class Game {
             moneyGen += plot.totalLemonadePerWeek();
         }
         return moneyGen;
+    }
+    public void moneyAfterEvent(double multi) {
+        money *= multi;
+        money = roundMoney();
+    }
+    private double roundMoney() {
+        int intMoney = (int) money;
+        double decimal = money - intMoney;
+        decimal *= 100;
+        decimal = (int) decimal;
+        decimal /= 100;
+        return intMoney + decimal;
     }
 }

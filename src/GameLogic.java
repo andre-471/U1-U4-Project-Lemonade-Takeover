@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class GameLogic {
     private final String[] MENU_CHOICES = new String[]{"trees", "plots", "end week", "stats"};
     private final String[] TREE_CHOICES = new String[]{"large", "medium", "small"};
-    private final String[] OPTIONS = new String[]{"y", "n"};
+    private final String[] OPTIONS = new String[]{"yes", "no"};
     private Scanner scan;
     private Game game;
     private RandomEvents events;
@@ -11,6 +11,7 @@ public class GameLogic {
     public GameLogic() {
         game = new Game();
         scan = new Scanner(System.in);
+        events = new RandomEvents();
         start();
     }
 
@@ -37,6 +38,16 @@ public class GameLogic {
             case "plots" -> newPlot();
             case "stats" -> System.out.println(game.stats());
             case "end week" -> {
+                System.out.println();
+                System.out.print(events.randomEventChooser());
+                if (events.newEvent()) {
+                    userInput = repeatUntil(OPTIONS);
+                    if (userInput.equals("yes"))
+                    {
+                        System.out.println(events.randomEventProcessor(userInput) + "\n");
+                        game.moneyAfterEvent(events.moneyChange());
+                    }
+                }
                 game.newWeek();
             }
             default -> throw new IllegalStateException("Unexpected value: " + userInput);
