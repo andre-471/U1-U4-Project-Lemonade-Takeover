@@ -24,7 +24,7 @@ public class Game {
         return "--- Week " + week + " ---\nRank: " + rank + "\nMoney: $" + money + "\nPlots: " + totalPlots();
     }
 
-    public int netWorth() {
+    public double netWorth() {
         int netWorth = 0;
         for (Plot plot : plots) {
             netWorth += plot.plotValue();

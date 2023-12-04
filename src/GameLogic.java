@@ -31,8 +31,12 @@ public class GameLogic {
     private void mainMenu() {
         System.out.println(game.stats()); // testing !!
         System.out.println(game.getAllPlotTrees());
-        System.out.print("What would you like to do?\nType \"trees\" to buy trees\nType \"plots\" to buy plots\nType \"stats\" to see your current stats\n" +
-                "Or \"end week\" to finish the week\ninput: ");
+        System.out.print("What would you like to do?\n" +
+                "Type \"trees\" to buy trees\n" +
+                "Type \"plots\" to buy plots\n" +
+                "Type \"stats\" to see your current stats\n" +
+                "Or \"end week\" to finish the week\n" +
+                "input: ");
         String userInput = repeatUntil(MENU_CHOICES);
         switch (userInput) {
             case "trees" -> newTree();
