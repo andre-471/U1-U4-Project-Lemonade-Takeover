@@ -5,6 +5,8 @@ public class Game {
     private ArrayList<Plot> plots;
     private int week;
     private String rank;
+    private RandomEvent randomEvent;
+    private boolean eventLastWeek;
 
     public Game() {
         money = 10000;
@@ -12,6 +14,8 @@ public class Game {
         plots.add(new Plot());
         week = 0;
         rank = "local lemonade store";
+        randomEvent = null;
+        eventLastWeek = false;
     }
 
 
@@ -91,17 +95,33 @@ public class Game {
         return moneyGen;
     }
 
-    public void moneyAfterEvent(double multi) {
-        money *= multi;
-        money = roundMoney();
+    public boolean newRandomEvent() {
+        randomEvent = new RandomEvent(eventLastWeek);
+        eventLastWeek = !eventLastWeek;
+        return randomEvent.ifEvent();
     }
 
-    private double roundMoney() {
+    /***
+     * PRECONDITION: randomEvent BETTER NOT BE (null) !!!!
+     * @return a string related to the random event
+     */
+    public String randomEventPrompt() {
+        return randomEvent.randomEventPrompt();
+    }
+
+    public String processRandomEvent() {
+        String eventMessage = randomEvent.processRandomEvent();
+        money *= randomEvent.getMultiplier();
+        roundMoney();
+        return eventMessage;
+    }
+
+    private void roundMoney() {
         int intMoney = (int) money;
         double decimal = money - intMoney;
         decimal *= 100;
         decimal = (int) decimal;
         decimal /= 100;
-        return intMoney + decimal;
+        money = intMoney + decimal;
     }
 }
