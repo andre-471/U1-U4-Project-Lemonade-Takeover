@@ -4,18 +4,21 @@
  * @author Munim Ali and Andrew Zhang
  */
 public class Tree {
-    /** The size of all large trees */
-    private static final int TREE_SIZE_L = 14;
-    /** The size of all medium trees */
-    private static final int TREE_SIZE_M = 10;
     /** The size of all small trees */
     private static final int TREE_SIZE_S = 7;
-    /** The cost of all large trees */
-    private static final int TREE_COST_L = 1000;
-    /** The cost of all medium trees */
-    private static final int TREE_COST_M = 50;
+    /** The size of all medium trees */
+    private static final int TREE_SIZE_M = 10;
+    /** The size of all large trees */
+    private static final int TREE_SIZE_L = 14;
     /** The cost of all small trees */
     private static final int TREE_COST_S = 5;
+    /** The cost of all medium trees */
+    private static final int TREE_COST_M = 50;
+    /** The cost of all large trees */
+    private static final int TREE_COST_L = 1000;
+    private static final int TREE_PRODUCTION_S = 5;
+    private static final int TREE_PRODUCTION_M = 20;
+    private static final int TREE_PRODUCTION_L = 45;
     /** the size of a tree in String format*/
     private String treeType;
     /** the size of a tree in int format */
@@ -31,23 +34,20 @@ public class Tree {
      */
     public Tree(String treeType) {
         this.treeType = treeType;
-        switch (treeType) {
-            case "large" -> {
-                treeSize = TREE_SIZE_L;
-                treeProduction = 45;
-                treePrice = TREE_COST_L;
-            }
-            case "medium" -> {
-                treeSize = TREE_SIZE_M;
-                treeProduction = 20;
-                treePrice = TREE_COST_M;
-            }
-            case "small" -> {
-                treeSize = TREE_SIZE_S;
-                treeProduction = 5;
-                treePrice = TREE_COST_S;
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + treeType);
+        if (treeType.equals("small")) {
+            treeSize = TREE_SIZE_S;
+            treeProduction = TREE_PRODUCTION_S;
+            treePrice = TREE_COST_S;
+        } else if (treeType.equals("medium")) {
+            treeSize = TREE_SIZE_M;
+            treeProduction = TREE_PRODUCTION_M;
+            treePrice = TREE_COST_M;
+        } else if (treeType.equals("large")) {
+            treeSize = TREE_SIZE_L;
+            treeProduction = TREE_PRODUCTION_L;
+            treePrice = TREE_COST_L;
+        } else {
+            throw new IllegalStateException("Unexpected value: " + treeType);
         }
     }
 
@@ -58,9 +58,9 @@ public class Tree {
      */
     public static int sizeBasedOnType(String treeType) {
         return switch (treeType) {
-            case "large" -> TREE_SIZE_L;
-            case "medium" -> TREE_SIZE_M;
             case "small" -> TREE_SIZE_S;
+            case "medium" -> TREE_SIZE_M;
+            case "large" -> TREE_SIZE_L;
             default -> throw new IllegalStateException("Unexpected value: " + treeType);
         };
     }
@@ -72,9 +72,9 @@ public class Tree {
      */
     public static int costBasedOnType(String treeType) {
         return switch (treeType) {
-            case "large" -> TREE_COST_L;
-            case "medium" -> TREE_COST_M;
             case "small" -> TREE_COST_S;
+            case "medium" -> TREE_COST_M;
+            case "large" -> TREE_COST_L;
             default -> throw new IllegalStateException("Unexpected value: " + treeType);
         };
     }
@@ -108,7 +108,7 @@ public class Tree {
      * Returns the amount of lemons a tree produces in a week
      * @return The weekly amount of lemons made by a tree
      */
-    public int lemonadePerWeek() {
+    public int getTreeProduction() {
         return treeProduction;
     }
 }

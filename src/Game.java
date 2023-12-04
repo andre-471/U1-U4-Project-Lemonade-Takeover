@@ -14,12 +14,6 @@ public class Game {
         rank = "local lemonade store";
     }
 
-    public void newPlot(int amount) {
-        for (int i = 0; i < amount; i++) {
-            plots.add(new Plot()); // subtract money
-            money -= Plot.COST;
-        }
-    }
 
     public void newWeek() {
         week++;
@@ -30,6 +24,34 @@ public class Game {
         return "--- Week " + week + " ---\nRank: " + rank + "\nMoney: $" + money + "\nPlots: " + totalPlots();
     }
 
+    public int netWorth() {
+        int netWorth = 0;
+        for (Plot plot : plots) {
+            netWorth += plot.plotValue();
+        }
+
+        netWorth += money;
+
+        return netWorth;
+    }
+    public boolean canAffordTrees(String treeType, int amount) {
+        return money >= Tree.costBasedOnType(treeType) * amount;
+    }
+
+    public boolean canAffordPlots(int amount) {
+        return money >= amount * Plot.COST;
+    }
+
+    public void newPlot(int amount) {
+        for (int i = 0; i < amount; i++) {
+            plots.add(new Plot()); // subtract money
+            money -= Plot.COST;
+        }
+    }
+
+    public int totalPlots() {
+        return plots.size();
+    }
 
     public void updateRank() {
 
@@ -53,44 +75,23 @@ public class Game {
         return plots.get(plotNum - 1).hasSpace(treeType, amount);
     }
 
-    public int totalPlots() {
-        return plots.size();
-    }
-
-    public int netWorth() {
-        int netWorth = 0;
-        for (Plot plot : plots) {
-            netWorth += plot.plotValue();
-        }
-
-        netWorth += money;
-
-        return netWorth;
-    }
-
     public void addTree(int plotNum, String treeType, int amount) {
         plots.get(plotNum - 1).addTree(treeType, amount);
-    }
-
-    public boolean canAffordTrees(String treeType, int amount) {
-        return money >= Tree.costBasedOnType(treeType) * amount;
-    }
-
-    public boolean canAffordPlots(int amount) {
-        return money >= amount * Plot.COST; // 100 placeholder value for price of a plot, will liely be adjusted
     }
 
     public int MoneyPerWeek() {
         int moneyGen = 0;
         for (Plot plot : plots) {
-            moneyGen += plot.totalLemonadePerWeek();
+            moneyGen += plot.totalTreeProduction();
         }
         return moneyGen;
     }
+
     public void moneyAfterEvent(double multi) {
         money *= multi;
         money = roundMoney();
     }
+
     private double roundMoney() {
         int intMoney = (int) money;
         double decimal = money - intMoney;

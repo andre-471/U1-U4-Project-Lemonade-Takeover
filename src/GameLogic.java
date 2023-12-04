@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class GameLogic {
+    private final String[] MENU_CHOICES = new String[]{"trees", "plots", "stats", "end week"};
     private final String[] TREE_CHOICES = new String[]{"large", "medium", "small"};
     private final String[] OPTIONS = new String[]{"yes", "no"};
     private Scanner scan;
@@ -32,7 +33,7 @@ public class GameLogic {
         System.out.println(game.getAllPlotTrees());
         System.out.print("What would you like to do?\nType \"trees\" to buy trees\nType \"plots\" to buy plots\nType \"stats\" to see your current stats\n" +
                 "Or \"end week\" to finish the week\ninput: ");
-        String userInput = scan.nextLine().trim().toLowerCase();
+        String userInput = repeatUntil(MENU_CHOICES);
         switch (userInput) {
             case "trees" -> newTree();
             case "plots" -> newPlot();
@@ -63,14 +64,8 @@ public class GameLogic {
         System.out.print("What kind of tree would you like?: ");
         String treeType = repeatUntil(TREE_CHOICES);
         System.out.print("How many trees would you like to purchase?: ");
-        int amountWanted = 0;
-        switch (treeType) {
-            case "small" -> amountWanted = repeatUntil(10);
-            case "medium" -> amountWanted = repeatUntil(7);
-            case "large" -> amountWanted = repeatUntil(5);
-
-            default -> throw new IllegalStateException("Unexpected value:" + treeType);
-        }
+        // make sures you can't buy more than how many trees could fit in a plot
+        int amountWanted = repeatUntil(0, Plot.maxTreesInPlot(treeType));
 
         if (!game.canAffordTrees(treeType, amountWanted)) {
             System.out.println("You cannot afford " + amountWanted + " trees.");
@@ -78,7 +73,7 @@ public class GameLogic {
         }
 
         System.out.print("Which plot would you like to plant it in?: ");
-        int userPlotNum = repeatUntil(game.totalPlots()); // should always be at least 1
+        int userPlotNum = repeatUntil(1, game.totalPlots()); // should always be at least 1
         if (!game.plotHasSpace(userPlotNum, treeType, amountWanted)) {
             System.out.println("Error, space not available in plot");
             return;
@@ -94,7 +89,7 @@ public class GameLogic {
 
     private void newPlot() {
         System.out.print("How many plots do you want to buy?: ");
-        int amount = repeatUntil(99);
+        int amount = repeatUntil(0, 100);
         if (game.canAffordPlots(amount)) {
             game.newPlot(amount);
         } else {
@@ -102,18 +97,10 @@ public class GameLogic {
         }
     }
 
-    private boolean isInt(String checkingStr) {
-        try {
-            Integer.parseInt(checkingStr);
-            return true;
-        } catch(NumberFormatException e) {
-            return false;
-        }
-    }
 
     private String repeatUntil(String[] strings) {
         String input = scan.nextLine().trim().toLowerCase();
-        while (!objectInArray(strings, input)) {
+        while (!stringInArray(strings, input)) {
             System.out.print("Error, please type in a valid response: ");
             input = scan.nextLine().trim().toLowerCase();
         }
@@ -121,22 +108,31 @@ public class GameLogic {
         return input;
     }
 
-    private int repeatUntil(int max) {
+    private int repeatUntil(int min, int max) {
         String input = scan.nextLine().trim().toLowerCase();
-        while (!isInt(input) || Integer.parseInt(input) < 1 || Integer.parseInt(input) > max) {
-            System.out.print("Error, please type in an non-negative integer less than or equal to " + max + ": ");
+        while (!isInt(input) || Integer.parseInt(input) < min || Integer.parseInt(input) > max) {
+            System.out.print("Error, please type in an integer greater than or equal to " + min +
+                    " and less than or equal to " + max + ": ");
             input = scan.nextLine().trim().toLowerCase();
         }
 
         return Integer.parseInt(input);
     }
 
-    private boolean objectInArray(String[] strings, String string) {
+    private boolean stringInArray(String[] strings, String string) {
         for (String arrayString : strings) {
             if (arrayString.equals(string)) {
                 return true;
             }
         }
         return false;
+    }
+    private boolean isInt(String checkingStr) {
+        try {
+            Integer.parseInt(checkingStr);
+            return true;
+        } catch(NumberFormatException e) {
+            return false;
+        }
     }
 }
