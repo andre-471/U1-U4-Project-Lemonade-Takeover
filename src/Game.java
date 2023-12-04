@@ -75,6 +75,10 @@ public class Game {
         return plots.get(plotNum - 1).hasSpace(treeType, amount);
     }
 
+    public void makePlotSpace(int plotNum, String treeType, int amount) {
+        plots.get(plotNum - 1).makePlotSpace(treeType, amount);
+    }
+
     public void addTree(int plotNum, String treeType, int amount) {
         plots.get(plotNum - 1).addTree(treeType, amount);
     }

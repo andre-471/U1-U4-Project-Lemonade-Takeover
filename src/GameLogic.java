@@ -38,27 +38,10 @@ public class GameLogic {
             case "trees" -> newTree();
             case "plots" -> newPlot();
             case "stats" -> System.out.println(game.stats());
-            case "end week" -> {
-                System.out.println();
-                RandomEvents events = new RandomEvents(lastWeekEvent);
-                System.out.print(events.randomEventChooser());
-                if (events.newEvent()) {
-                    userInput = repeatUntil(OPTIONS);
-                    if (userInput.compareTo("yes") == 0)
-                    {
-                        System.out.println(events.randomEventProcessor(userInput) + "\n");
-                        game.moneyAfterEvent(events.moneyChange());
-                    }
-                    lastWeekEvent = true;
-                } else {
-                    lastWeekEvent = false;
-                }
-                game.newWeek();
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + userInput); // use repeatuntil fucker
+            case "end week" -> endWeek();
+            default -> throw new IllegalStateException("Unexpected value: " + userInput); // this is illegal
         }
     }
-
 
     private void newTree() {
         System.out.print("What kind of tree would you like?: ");
@@ -74,7 +57,7 @@ public class GameLogic {
 
         System.out.print("Which plot would you like to plant it in?: ");
         int userPlotNum = repeatUntil(1, game.totalPlots()); // should always be at least 1
-        if (!game.plotHasSpace(userPlotNum, treeType, amountWanted)) {
+        if (!game.plotHasSpace(userPlotNum, treeType, amountWanted) && !clearedSpace(userPlotNum, treeType, amountWanted)) {
             System.out.println("Error, space not available in plot");
             return;
         }
@@ -83,9 +66,6 @@ public class GameLogic {
         System.out.println("Trees have been purchased!");
     }
 
-    private boolean hasWon() {
-        return false;
-    }
 
     private void newPlot() {
         System.out.print("How many plots do you want to buy?: ");
@@ -97,6 +77,37 @@ public class GameLogic {
         }
     }
 
+    private void endWeek() {
+        System.out.println();
+        RandomEvents events = new RandomEvents(lastWeekEvent);
+        System.out.print(events.randomEventChooser());
+        if (events.newEvent()) {
+            String userInput = repeatUntil(OPTIONS);
+            if (userInput.compareTo("yes") == 0)
+            {
+                System.out.println(events.randomEventProcessor(userInput) + "\n");
+                game.moneyAfterEvent(events.moneyChange());
+            }
+            lastWeekEvent = true;
+        } else {
+            lastWeekEvent = false;
+        }
+        game.newWeek();
+    }
+
+    private boolean clearedSpace(int plotNum, String treeType, int amount) {
+        System.out.print("do you want clear space? ");
+        String userChoice = repeatUntil(OPTIONS);
+        if ("no".equals(userChoice)) { return false; }
+
+        game.makePlotSpace(plotNum, treeType, amount);
+
+        return true;
+    }
+
+    private boolean hasWon() {
+        return false;
+    }
 
     private String repeatUntil(String[] strings) {
         String input = scan.nextLine().trim().toLowerCase();
