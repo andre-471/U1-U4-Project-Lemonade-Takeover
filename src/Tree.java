@@ -34,20 +34,23 @@ public class Tree {
      */
     public Tree(String treeType) {
         this.treeType = treeType;
-        if (treeType.equals("small")) {
-            treeSize = TREE_SIZE_S;
-            treeProduction = TREE_PRODUCTION_S;
-            treePrice = TREE_COST_S;
-        } else if (treeType.equals("medium")) {
-            treeSize = TREE_SIZE_M;
-            treeProduction = TREE_PRODUCTION_M;
-            treePrice = TREE_COST_M;
-        } else if (treeType.equals("large")) {
-            treeSize = TREE_SIZE_L;
-            treeProduction = TREE_PRODUCTION_L;
-            treePrice = TREE_COST_L;
-        } else {
-            throw new IllegalStateException("Unexpected value: " + treeType);
+        switch (treeType) {
+            case "small" -> {
+                treeSize = TREE_SIZE_S;
+                treeProduction = TREE_PRODUCTION_S;
+                treePrice = TREE_COST_S;
+            }
+            case "medium" -> {
+                treeSize = TREE_SIZE_M;
+                treeProduction = TREE_PRODUCTION_M;
+                treePrice = TREE_COST_M;
+            }
+            case "large" -> {
+                treeSize = TREE_SIZE_L;
+                treeProduction = TREE_PRODUCTION_L;
+                treePrice = TREE_COST_L;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + treeType);
         }
     }
 
