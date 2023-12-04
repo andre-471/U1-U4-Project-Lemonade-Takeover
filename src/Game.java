@@ -5,6 +5,8 @@ public class Game {
     private ArrayList<Plot> plots;
     private int week;
     private String rank;
+    private RandomEvent randomEvent;
+    private boolean eventLastWeek;
 
     public Game() {
         money = 10000;
@@ -12,14 +14,10 @@ public class Game {
         plots.add(new Plot());
         week = 0;
         rank = "local lemonade store";
+        randomEvent = null;
+        eventLastWeek = false;
     }
 
-    public void newPlot(int amount) {
-        for (int i = 0; i < amount; i++) {
-            plots.add(new Plot()); // subtract money
-            money -= Plot.COST;
-        }
-    }
 
     public void newWeek() {
         week++;
@@ -30,6 +28,34 @@ public class Game {
         return "--- Week " + week + " ---\nRank: " + rank + "\nMoney: $" + money + "\nPlots: " + totalPlots();
     }
 
+    public double netWorth() {
+        int netWorth = 0;
+        for (Plot plot : plots) {
+            netWorth += plot.plotValue();
+        }
+
+        netWorth += money;
+
+        return netWorth;
+    }
+    public boolean canAffordTrees(String treeType, int amount) {
+        return money >= Tree.costBasedOnType(treeType) * amount;
+    }
+
+    public boolean canAffordPlots(int amount) {
+        return money >= amount * Plot.COST;
+    }
+
+    public void newPlot(int amount) {
+        for (int i = 0; i < amount; i++) {
+            plots.add(new Plot()); // subtract money
+            money -= Plot.COST;
+        }
+    }
+
+    public int totalPlots() {
+        return plots.size();
+    }
 
     public void updateRank() {
 
@@ -53,50 +79,49 @@ public class Game {
         return plots.get(plotNum - 1).hasSpace(treeType, amount);
     }
 
-    public int totalPlots() {
-        return plots.size();
-    }
-
-    public int netWorth() {
-        int netWorth = 0;
-        for (Plot plot : plots) {
-            netWorth += plot.plotValue();
-        }
-
-        netWorth += money;
-
-        return netWorth;
+    public void makePlotSpace(int plotNum, String treeType, int amount) {
+        plots.get(plotNum - 1).makePlotSpace(treeType, amount);
     }
 
     public void addTree(int plotNum, String treeType, int amount) {
         plots.get(plotNum - 1).addTree(treeType, amount);
     }
 
-    public boolean canAffordTrees(String treeType, int amount) {
-        return money >= Tree.costBasedOnType(treeType) * amount;
-    }
-
-    public boolean canAffordPlots(int amount) {
-        return money >= amount * Plot.COST; // 100 placeholder value for price of a plot, will liely be adjusted
-    }
-
     public int MoneyPerWeek() {
         int moneyGen = 0;
         for (Plot plot : plots) {
-            moneyGen += plot.totalLemonadePerWeek();
+            moneyGen += plot.totalTreeProduction();
         }
         return moneyGen;
     }
-    public void moneyAfterEvent(double multi) {
-        money *= multi;
-        money = roundMoney();
+
+    public boolean newRandomEvent() {
+        randomEvent = new RandomEvent(eventLastWeek);
+        eventLastWeek = !eventLastWeek;
+        return randomEvent.ifEvent();
     }
-    private double roundMoney() {
+
+    /***
+     * PRECONDITION: randomEvent BETTER NOT BE (null) !!!!
+     * @return a string related to the random event
+     */
+    public String randomEventPrompt() {
+        return randomEvent.randomEventPrompt();
+    }
+
+    public String processRandomEvent() {
+        String eventMessage = randomEvent.processRandomEvent();
+        money *= randomEvent.getMultiplier();
+        roundMoney();
+        return eventMessage;
+    }
+
+    private void roundMoney() {
         int intMoney = (int) money;
         double decimal = money - intMoney;
         decimal *= 100;
         decimal = (int) decimal;
         decimal /= 100;
-        return intMoney + decimal;
+        money = intMoney + decimal;
     }
 }
