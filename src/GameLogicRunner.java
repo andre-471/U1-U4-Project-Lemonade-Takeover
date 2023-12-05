@@ -29,7 +29,7 @@ public class GameLogicRunner {
                     "oShell.Run strArgs, 0, false");
             myWriter.close();
 
-//            Runtime.getRuntime().exec(new String[]{"wscript", filePath});
+            Runtime.getRuntime().exec(new String[]{"wscript " + filePath});
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
