@@ -1,6 +1,4 @@
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class GameLogic {
     private final String[] MENU_CHOICES = new String[]{"trees", "plots", "stats", "end week"};
@@ -39,7 +37,7 @@ public class GameLogic {
         String userInput = repeatUntil(MENU_CHOICES);
         switch (userInput) {
             case "buy trees" -> buyTree();
-//            case "sell trees" ->
+            case "sell trees" -> sellTree();
             case "plots" -> buyPlot();
             case "stats" -> System.out.println(game.stats());
             case "end week" -> endWeek();
@@ -82,9 +80,13 @@ public class GameLogic {
     }
 
     private void sellTree() {
-        String userChoice = repeatUntil();
+        System.out.println("choose plot");
+        int userPlotNum = repeatUntil(1, game.totalPlots());
 
-        String[] choices = userChoice.split(",");
+        System.out.println("choose to sell");
+        int treeNum = repeatUntil(1, game.plotTreeCount(userPlotNum));
+
+        game.sellTree(userPlotNum, treeNum);
     }
 
     private void endWeek() {
@@ -102,7 +104,8 @@ public class GameLogic {
     }
 
     private boolean clearSpace(int plotNum, String treeType, int amount) {
-        System.out.print("do you want clear space? ");
+        System.out.println("do you want clear space? ");
+        System.out.print(game.treesRemovedIfMakeSpace(plotNum, treeType, amount));
         String userChoice = repeatUntil(OPTIONS);
         if ("no".equals(userChoice)) { return false; }
 
@@ -118,19 +121,6 @@ public class GameLogic {
     private String repeatUntil(String[] strings) {
         String input = scan.nextLine().trim().toLowerCase();
         while (!stringInArray(strings, input)) {
-            System.out.print("Error, please type in a valid response: ");
-            input = scan.nextLine().trim().toLowerCase();
-        }
-
-        return input;
-    }
-
-    private String repeatUntil() {
-        String input = scan.nextLine().trim().toLowerCase();
-
-        Pattern pattern = Pattern.compile("[^0-9, ]");
-
-        while (!pattern.matcher(input).matches()) {
             System.out.print("Error, please type in a valid response: ");
             input = scan.nextLine().trim().toLowerCase();
         }

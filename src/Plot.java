@@ -88,11 +88,16 @@ public class Plot {
      * @param treeType Type of some kind of tree
      * @param amount Amount of that kind of tree
      */
-    public void makePlotSpace(String treeType, int amount) {
+    public int makePlotSpace(String treeType, int amount) {
         int spaceToMake = Tree.sizeBasedOnType(treeType) * amount;
-        int[] treesNeeded = treesNeeded(spaceToMake);
+        int[] treesNeeded = treesNeededToClearSpace(spaceToMake);
 
-        removeTree(treesNeeded);
+        return clearSpace(treesNeeded);
+    }
+
+    public int[] treesRemovedIfMakeSpace(String treeType, int amount) {
+        int spaceToMake = Tree.sizeBasedOnType(treeType) * amount;
+        return treesNeededToClearSpace(spaceToMake);
     }
 
     /**
@@ -109,6 +114,9 @@ public class Plot {
         return plotValue;
     }
 
+    public int totalTrees() {
+        return trees.size();
+    }
     /**
      * Sells a tree in the trees list given the index
      *
@@ -121,7 +129,7 @@ public class Plot {
         return treeCost;
     }
 
-    private int removeTree(int[] treesNeeded) {
+    private int clearSpace(int[] treesNeeded) {
         int i = 0;
         int treeCost = 0;
 
@@ -143,8 +151,8 @@ public class Plot {
         return treeCost;
     }
 
-    private int[] treesNeeded(int plotSpace) {
-        int[] treeCount = countTrees();
+    private int[] treesNeededToClearSpace(int plotSpace) {
+        int[] treeCount = countTreeTypes();
         int[] treesNeeded = new int[3];
 
         int smallTreesNeeded = (int) Math.nextUp((double) plotSpace / Tree.sizeBasedOnType("small"));
@@ -165,7 +173,7 @@ public class Plot {
         return treesNeeded;
     }
 
-    private int[] countTrees() {
+    private int[] countTreeTypes() {
         int[] treeCount = new int[3];
 
         for (Tree tree : trees) {

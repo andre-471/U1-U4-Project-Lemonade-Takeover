@@ -1,12 +1,10 @@
 public class RandomEvent {
-    private int eventNumber;
     private boolean won; // to make decide if method adds or takes away money
-    private boolean eventLastWeek;
+    private int eventNumber;
     private double multiplier;
-    public RandomEvent(boolean eventLastWeek) {
+    public RandomEvent() {
         won = false;
-        this.eventLastWeek = eventLastWeek;
-        eventNumber = (int)(Math.random() * 10) + 1;
+        eventNumber = (int)(Math.random() * 20) + 1;
         multiplier = 1;
     }
 
@@ -21,9 +19,6 @@ public class RandomEvent {
         };
     }
     public boolean ifEvent() {
-        if (eventLastWeek) {
-            return false;
-        }
         return eventNumber <= 5;
     }
 

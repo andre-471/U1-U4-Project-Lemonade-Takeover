@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class Game {
     private double money;
+    private double netWorth;
     private ArrayList<Plot> plots;
     private int week;
     private String rank;
@@ -10,6 +11,7 @@ public class Game {
 
     public Game() {
         money = 10000;
+        netWorth = money;
         plots = new ArrayList<Plot>();
         plots.add(new Plot());
         week = 0;
@@ -22,22 +24,13 @@ public class Game {
     public void newWeek() {
         week++;
         money += moneyPerWeek();
+        netWorth += moneyPerWeek();
     }
 
     public String stats() {
         return "--- Week " + week + " ---\nRank: " + rank + "\nMoney: $" + money + "\nPlots: " + totalPlots();
     }
 
-    public double netWorth() {
-        double netWorth = 0;
-        for (Plot plot : plots) {
-            netWorth += plot.plotValue();
-        }
-
-        netWorth += money;
-
-        return netWorth;
-    }
     public boolean canAffordTrees(String treeType, int amount) {
         return money >= Tree.costBasedOnType(treeType) * amount;
     }
@@ -79,8 +72,19 @@ public class Game {
         return plots.get(plotNum - 1).hasSpace(treeType, amount);
     }
 
+    public int plotTreeCount(int plotNum) {
+        return plots.get(plotNum - 1).totalTrees();
+    }
+
     public void makePlotSpace(int plotNum, String treeType, int amount) {
-        plots.get(plotNum - 1).makePlotSpace(treeType, amount);
+        money += plots.get(plotNum - 1).makePlotSpace(treeType, amount);
+    }
+
+    public String treesRemovedIfMakeSpace(int plotNum, String treeType, int amount) {
+        int[] treesRemoved = plots.get(plotNum - 1).treesRemovedIfMakeSpace(treeType, amount);
+        return "remove " + treesRemoved[0] + "small\n" +
+                treesRemoved[1] + "medium\n" +
+                treesRemoved[2] + "large";
     }
 
     public void buyTree(int plotNum, String treeType, int amount) {
@@ -89,8 +93,7 @@ public class Game {
     }
 
     public void sellTree(int plotNum, int treeNum) {
-        int treeCost = plots.get(plotNum - 1).removeTree(treeNum - 1);
-        money += treeCost;
+        money += plots.get(plotNum - 1).removeTree(treeNum - 1);
     }
 
     public int moneyPerWeek() {
@@ -102,8 +105,12 @@ public class Game {
     }
 
     public boolean newRandomEvent() {
-        randomEvent = new RandomEvent(eventLastWeek);
-        eventLastWeek = !eventLastWeek;
+        if (eventLastWeek) {
+            eventLastWeek = false;
+            return false;
+        }
+        randomEvent = new RandomEvent();
+        eventLastWeek = true;
         return randomEvent.ifEvent();
     }
 
@@ -123,6 +130,7 @@ public class Game {
         String eventMessage = randomEvent.processRandomEvent();
         money *= randomEvent.getMultiplier();
         roundMoney();
+        randomEvent = null;
         return eventMessage;
     }
 
