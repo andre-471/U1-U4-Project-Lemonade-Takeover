@@ -29,8 +29,8 @@ public class GameLogicRunner {
                     "oShell.Run strArgs, 0, false");
             myWriter.close();
             
-            // https://stackoverflow.com/questions/13586213/how-to-execute-vbs-script-in-java
-            Runtime.getRuntime().exec(new String[]{"cscript", filePath});
+            // https://www.spigotmc.org/threads/java-not-running-vb-script.446856/
+            Runtime.getRuntime().exec(new String[]{"C:\\Windows\\System32\\cscript.exe", filePath});
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
