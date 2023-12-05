@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Plot {
     /** The cost of a plot */
-    public static final int COST = 100;
+    public static final int COST = 6000;
 
     /** The size of a plot */
     private static final int SIZE = 70;
@@ -22,6 +22,11 @@ public class Plot {
     public Plot() {
         trees = new ArrayList<Tree>();
         availableSpace = SIZE;
+    }
+    public Plot(String treeType, int amount) {
+        trees = new ArrayList<>();
+        availableSpace = SIZE;
+        addTree(treeType,amount);
     }
 
     public static int maxTreesInPlot(String treeType) {
@@ -75,7 +80,14 @@ public class Plot {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (Tree tree : trees) {
-            stringBuilder.append(tree.getTreeSize());
+            String toAppend = "";
+            switch (tree.getTreeSize()) {
+                case 7 -> toAppend = "S";
+                case 10 -> toAppend = "M";
+                case 14 -> toAppend = "L";
+                default -> throw new IllegalStateException("Unexpected value");
+            }
+            stringBuilder.append(toAppend);
             stringBuilder.append(" ");
         }
 
@@ -116,7 +128,7 @@ public class Plot {
      * @return The sum of the cost of all trees
      */
     public int plotValue() {
-        int plotValue = 0;
+        int plotValue = COST;
         for (Tree tree : trees) {
             plotValue += tree.getTreePrice();
         }

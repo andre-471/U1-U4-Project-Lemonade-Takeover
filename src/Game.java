@@ -12,16 +12,20 @@ public class Game {
         money = 10000;
         plots = new ArrayList<Plot>();
         plots.add(new Plot());
-        week = 0;
+        plots.get(0).addTree("small",1);
+        week = 1;
         rank = "local lemonade store";
         randomEvent = null;
         eventLastWeek = false;
     }
 
-
+    public String returnRank() {
+        return rank;
+    }
     public void newWeek() {
         week++;
         money += MoneyPerWeek();
+        updateRank();
     }
 
     public String stats() {
@@ -45,20 +49,33 @@ public class Game {
     public boolean canAffordPlots(int amount) {
         return money >= amount * Plot.COST;
     }
+    public boolean canAffordPlots(String treeType, int treeAmount, int plotAmount) {
+        return money >= (plotAmount * Plot.COST) + (Tree.costBasedOnType(treeType) * treeAmount);
+    }
+
+    public void chargeMoney(int amount) {
+        money -= amount * Plot.COST;
+    }
+    public void chargeMoney(String treeType, int amount) {
+        money -= Tree.costBasedOnType(treeType) * amount;
+    }
+    public void chargeMoney(String treeType, int treeAmount, int plotAmount) {
+        money -=  (plotAmount * Plot.COST) + (Tree.costBasedOnType(treeType) * treeAmount);
+    }
 
     public void newPlot(int amount) {
         for (int i = 0; i < amount; i++) {
-            plots.add(new Plot()); // subtract money
-            money -= Plot.COST;
+            plots.add(new Plot());
+        }
+    }
+    public void newPlot(String treeType, int treeAmount, int plotAmount) {
+        for (int i = 0; i < plotAmount; i++) {
+            plots.add(new Plot(treeType, treeAmount));
         }
     }
 
     public int totalPlots() {
         return plots.size();
-    }
-
-    public void updateRank() {
-
     }
 
     public String getPlotTrees(int plotNum) {
@@ -123,5 +140,19 @@ public class Game {
         decimal = (int) decimal;
         decimal /= 100;
         money = intMoney + decimal;
+    }
+    private void updateRank() {
+        double netWorth = netWorth();
+        if (netWorth < 50000) {
+            rank = "local lemonade store";
+        } else if (netWorth < 100000) {
+            rank = "regional lemonade chain";
+        } else if (netWorth < 250000) {
+            rank = "national lemonade chain";
+        } else if (netWorth < 1000000) {
+            rank = "world wide lemonade chain";
+        } else {
+            rank = "the face of lemonade";
+        }
     }
 }
