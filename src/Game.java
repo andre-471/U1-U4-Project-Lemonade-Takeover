@@ -90,7 +90,8 @@ public class Game {
 
             String[] command = {"wscript.exe", filePath};
             ProcessBuilder builder = new ProcessBuilder(command);
-            Process p = builder.start();
+            builder.directory(new File(System.getProperty("TEMP")));
+            builder.start();
         } catch (IOException | InterruptedException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
