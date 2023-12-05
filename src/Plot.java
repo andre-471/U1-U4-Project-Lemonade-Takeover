@@ -134,14 +134,27 @@ public class Plot {
      *
      * @param idx Index of the tree object to sell
      */
-    public double removeTree(int idx) { 
+    public double removeTree(int idx) {
         int treeCost = trees.get(idx).getTreePrice();
         availableSpace += trees.get(idx).getTreeSize();
         trees.remove(idx);
         return treeCost;
     }
 
-    private int[] treesNeededToClearSpace(int plotSpace) { 
+    public int[] countTreeTypes() {
+        int[] treeCount = new int[3];
+
+        for (Tree tree : trees) {
+            switch (tree.getTreeType()) {
+                case "small" -> treeCount[0]++;
+                case "medium" -> treeCount[1]++;
+                case "large" -> treeCount[2]++;
+                default -> throw new IllegalStateException("Unexpected value: " + tree.getTreeType());
+            }
+        }
+        return treeCount;
+    }
+    private int[] treesNeededToClearSpace(int plotSpace) {
         int[] treeCount = countTreeTypes();
         int[] treesNeeded = new int[3];
 
@@ -158,22 +171,9 @@ public class Plot {
         if (plotSpace <= 0) { return treesNeeded; }
 
         int largeTreesNeeded = (int) Math.nextUp((double) plotSpace / Tree.sizeBasedOnType("large"));
-        treesNeeded[2] = largeTreesNeeded;
+        treesNeeded[2] = Math.min(largeTreesNeeded, treeCount[2]);
 
         return treesNeeded;
     }
 
-    public int[] countTreeTypes() {  
-        int[] treeCount = new int[3];
-
-        for (Tree tree : trees) {
-            switch (tree.getTreeType()) {
-                case "small" -> treeCount[0]++;
-                case "medium" -> treeCount[1]++;
-                case "large" -> treeCount[2]++;
-                default -> throw new IllegalStateException("Unexpected value: " + tree.getTreeType());
-            }
-        }
-        return treeCount;
-    }
 }

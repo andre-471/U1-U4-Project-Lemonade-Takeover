@@ -38,12 +38,13 @@ public class GameLogic {
 
     // game goes by week, gives player the option on what to do, random events first
     private void mainMenu() {
+        System.out.println();
         System.out.println(game.stats());
         System.out.print("What would you like to do?\n" +
                 "Type \"trees\" to buy trees\n" +
                 "Type \"plots\" to buy plots\n" +
                 "Type \"stats\" to see your current stats\n" +
-                "Type \"see your trees\" to see them\n" +
+                "Type \"see trees\" to see them\n" +
                 "Or \"end week\" to finish the week\n" +
                 "input: ");
         String userInput = repeatUntil(MENU_CHOICES);
@@ -96,6 +97,7 @@ public class GameLogic {
         if (plotType.equals("empty")) {
             if (game.canAffordPlots(plotAmount)) {
                 game.buyPlot(plotAmount);
+                System.out.println("Plots have been purchased!");
             } else {
                 System.out.println("Error, you do not have enough money to buy this many plots.");
             }
@@ -106,6 +108,7 @@ public class GameLogic {
             int treeAmount = repeatUntil(Plot.maxTreesInPlot(treeType));
             if (game.canAffordPlots(treeType, treeAmount, plotAmount)) {
                 game.buyPlot(treeType, treeAmount, plotAmount);
+                System.out.println("Plots have been purchased!");
             } else {
                 System.out.println("Error, you do not have enough money to buy this many plots.");
             }
@@ -114,7 +117,6 @@ public class GameLogic {
 
     private void endWeek() {
         System.out.println();
-
         if (game.newRandomEvent()) {
             System.out.print(game.randomEventPrompt());
             String userInput = repeatUntil(OPTIONS);
@@ -127,9 +129,11 @@ public class GameLogic {
     }
 
     private boolean clearSpace(int plotNum, String treeType, int amount) {
-        System.out.println("do you want clear space? ");
+        System.out.println("Your plot doesn't have enough space to add the trees you requested. ");
+        System.out.println("Do you want to clear some space to add the new trees? ");
+        System.out.println("These trees will be removed: ");
         System.out.println(game.treesRemovedIfMakeSpace(plotNum, treeType, amount));
-        System.out.print("also only get half cash back!");
+        System.out.println("You will only get half of the money you paid for these trees back! (yes or no)");
         String userChoice = repeatUntil(OPTIONS);
         if ("no".equals(userChoice)) { return false; }
 
@@ -160,7 +164,7 @@ public class GameLogic {
 
     private boolean stringInArray(String[] strings, String string) {
         for (String arrayString : strings) {
-            if (arrayString.equals(string)) {
+            if (arrayString.compareTo(string) == 0) {
                 return true;
             }
         }

