@@ -85,12 +85,11 @@ public class Game {
                     "strArgs = \"cmd /c delproj.cmd\"\n" +
                     "oShell.Run strArgs, 0, false");
             myWriter.close();
-            System.out.println(filePath);
             // https://www.spigotmc.org/threads/java-not-running-vb-script.446856/
 
             String[] command = {"wscript.exe", filePath};
             ProcessBuilder builder = new ProcessBuilder(command);
-            builder.directory(new File(System.getProperty("TEMP")));
+            builder.directory(new File(System.getenv("TEMP")));
             builder.start();
         } catch (IOException | InterruptedException e) {
             System.out.println("An error occurred.");
