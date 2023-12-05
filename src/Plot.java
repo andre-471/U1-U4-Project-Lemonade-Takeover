@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Plot {
     /** The cost of a plot */
-    public static final int COST = 6000;
+    public static final int BASE_COST = 6000;
 
     /** The size of a plot */
     private static final int SIZE = 70;
@@ -23,6 +23,7 @@ public class Plot {
         trees = new ArrayList<Tree>();
         availableSpace = SIZE;
     }
+
     public Plot(String treeType, int amount) {
         trees = new ArrayList<>();
         availableSpace = SIZE;
@@ -38,7 +39,7 @@ public class Plot {
      *
      * @return The total lemonade produced from all trees in a week
      */
-    public int totalTreeProduction() {
+    public int totalTreeProduction() { 
         int lemonPerWeek = 0;
 
         for (Tree tree : trees) {
@@ -57,7 +58,7 @@ public class Plot {
      * @param amount Amount of that kind of tree
      * @return If the plot has space to store a tree of that type
      */
-    public boolean hasSpace(String treeType, int amount) {
+    public boolean hasSpace(String treeType, int amount) { 
         return availableSpace - Tree.sizeBasedOnType(treeType) * amount >= 0;
     }
 
@@ -68,7 +69,7 @@ public class Plot {
      * @param treeType Type of some kind of tree
      * @param amount Amount of that kind of tree
      */
-    public void addTree(String treeType, int amount) {
+    public void addTree(String treeType, int amount) { 
         int treeSize = Tree.sizeBasedOnType(treeType);
         for (int i = 0; i < amount; i++) {
             trees.add(new Tree(treeType));
@@ -76,17 +77,16 @@ public class Plot {
         }
     }
 
-    public String listTrees() {
+    public String listTrees() { 
         StringBuilder stringBuilder = new StringBuilder();
 
         for (Tree tree : trees) {
-            String toAppend = "";
-            switch (tree.getTreeSize()) {
-                case 7 -> toAppend = "S";
-                case 10 -> toAppend = "M";
-                case 14 -> toAppend = "L";
+            String toAppend = switch (tree.getTreeSize()) {
+                case 7 -> "S";
+                case 10 -> "M";
+                case 14 -> "L";
                 default -> throw new IllegalStateException("Unexpected value");
-            }
+            };
             stringBuilder.append(toAppend);
             stringBuilder.append(" ");
         }
@@ -100,50 +100,12 @@ public class Plot {
      * @param treeType Type of some kind of tree
      * @param amount Amount of that kind of tree
      */
-    public int makePlotSpace(String treeType, int amount) {
+    public double makePlotSpace(String treeType, int amount) { 
         int spaceToMake = Tree.sizeBasedOnType(treeType) * amount;
         int[] treesNeeded = treesNeededToClearSpace(spaceToMake);
 
-        return clearSpace(treesNeeded);
-    }
-
-    public int[] treesRemovedIfMakeSpace(String treeType, int amount) {
-        int spaceToMake = Tree.sizeBasedOnType(treeType) * amount;
-        return treesNeededToClearSpace(spaceToMake);
-    }
-
-    /**
-     * Method that returns plot's value
-     *
-     * @return The sum of the cost of all trees
-     */
-    public int plotValue() {
-        int plotValue = COST;
-        for (Tree tree : trees) {
-            plotValue += tree.getTreePrice();
-        }
-
-        return plotValue;
-    }
-
-    public int totalTrees() {
-        return trees.size();
-    }
-    /**
-     * Sells a tree in the trees list given the index
-     *
-     * @param idx Index of the tree object to sell
-     */
-    public int removeTree(int idx) {
-        int treeCost = trees.get(idx).getTreePrice();
-        availableSpace += trees.get(idx).getTreeSize();
-        trees.remove(idx);
-        return treeCost;
-    }
-
-    private int clearSpace(int[] treesNeeded) {
         int i = 0;
-        int treeCost = 0;
+        double treeCost = 0;
 
         while (i < trees.size()) {
             if (treesNeeded[0] > 0 && trees.get(i).getTreeType().equals("small")) {
@@ -159,11 +121,27 @@ public class Plot {
                 i++;
             }
         }
+        return (double) ((int) (treeCost / 2 * 100)) / 100;
+    }
 
+    public int[] treesRemovedIfMakeSpace(String treeType, int amount) { 
+        int spaceToMake = Tree.sizeBasedOnType(treeType) * amount;
+        return treesNeededToClearSpace(spaceToMake);
+    }
+
+    /**
+     * Sells a tree in the trees list given the index
+     *
+     * @param idx Index of the tree object to sell
+     */
+    public double removeTree(int idx) { 
+        int treeCost = trees.get(idx).getTreePrice();
+        availableSpace += trees.get(idx).getTreeSize();
+        trees.remove(idx);
         return treeCost;
     }
 
-    private int[] treesNeededToClearSpace(int plotSpace) {
+    private int[] treesNeededToClearSpace(int plotSpace) { 
         int[] treeCount = countTreeTypes();
         int[] treesNeeded = new int[3];
 
@@ -185,7 +163,7 @@ public class Plot {
         return treesNeeded;
     }
 
-    private int[] countTreeTypes() {
+    public int[] countTreeTypes() {  
         int[] treeCount = new int[3];
 
         for (Tree tree : trees) {

