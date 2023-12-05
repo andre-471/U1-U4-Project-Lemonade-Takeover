@@ -9,11 +9,11 @@ public class Game {
     private boolean eventLastWeek;
 
     public Game() {
-        money = 1000;
+        money = 10000;
         plots = new ArrayList<Plot>();
         plots.add(new Plot());
         plots.get(0).addTree("small",1);
-        week = 0;
+        week = 1;
         rank = "local lemonade store";
         randomEvent = null;
         eventLastWeek = false;
@@ -42,24 +42,35 @@ public class Game {
 
         return netWorth;
     }
-    public boolean canAfford(String treeType, int amount) {
+    public boolean canAffordTrees(String treeType, int amount) {
         return money >= Tree.costBasedOnType(treeType) * amount;
     }
 
-    public boolean canAfford(int amount) {
+    public boolean canAffordPlots(int amount) {
         return money >= amount * Plot.COST;
     }
+    public boolean canAffordPlots(String treeType, int treeAmount, int plotAmount) {
+        return money >= (plotAmount * Plot.COST) + (Tree.costBasedOnType(treeType) * treeAmount);
+    }
+
     public void chargeMoney(int amount) {
         money -= amount * Plot.COST;
     }
     public void chargeMoney(String treeType, int amount) {
         money -= Tree.costBasedOnType(treeType) * amount;
     }
+    public void chargeMoney(String treeType, int treeAmount, int plotAmount) {
+        money -=  (plotAmount * Plot.COST) + (Tree.costBasedOnType(treeType) * treeAmount);
+    }
 
     public void newPlot(int amount) {
         for (int i = 0; i < amount; i++) {
-            plots.add(new Plot()); // subtract money
-            money -= Plot.COST;
+            plots.add(new Plot());
+        }
+    }
+    public void newPlot(String treeType, int treeAmount, int plotAmount) {
+        for (int i = 0; i < plotAmount; i++) {
+            plots.add(new Plot(treeType, treeAmount));
         }
     }
 
