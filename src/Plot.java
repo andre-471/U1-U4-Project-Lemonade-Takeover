@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Plot {
     /** The cost of a plot */
-    public static final int COST = 6000;
+    public static final int BASE_COST = 6000;
 
     /** The size of a plot */
     private static final int SIZE = 70;
@@ -23,6 +23,7 @@ public class Plot {
         trees = new ArrayList<Tree>();
         availableSpace = SIZE;
     }
+
     public Plot(String treeType, int amount) {
         trees = new ArrayList<>();
         availableSpace = SIZE;
@@ -38,7 +39,7 @@ public class Plot {
      *
      * @return The total lemonade produced from all trees in a week
      */
-    public int totalTreeProduction() {
+    public int totalTreeProduction() { 
         int lemonPerWeek = 0;
 
         for (Tree tree : trees) {
@@ -57,7 +58,7 @@ public class Plot {
      * @param amount Amount of that kind of tree
      * @return If the plot has space to store a tree of that type
      */
-    public boolean hasSpace(String treeType, int amount) {
+    public boolean hasSpace(String treeType, int amount) { 
         return availableSpace - Tree.sizeBasedOnType(treeType) * amount >= 0;
     }
 
@@ -68,7 +69,7 @@ public class Plot {
      * @param treeType Type of some kind of tree
      * @param amount Amount of that kind of tree
      */
-    public void addTree(String treeType, int amount) {
+    public void addTree(String treeType, int amount) { 
         int treeSize = Tree.sizeBasedOnType(treeType);
         for (int i = 0; i < amount; i++) {
             trees.add(new Tree(treeType));
@@ -76,17 +77,16 @@ public class Plot {
         }
     }
 
-    public String listTrees() {
+    public String listTrees() { 
         StringBuilder stringBuilder = new StringBuilder();
 
         for (Tree tree : trees) {
-            String toAppend = "";
-            switch (tree.getTreeSize()) {
-                case 7 -> toAppend = "S";
-                case 10 -> toAppend = "M";
-                case 14 -> toAppend = "L";
+            String toAppend = switch (tree.getTreeSize()) {
+                case 7 -> "S";
+                case 10 -> "M";
+                case 14 -> "L";
                 default -> throw new IllegalStateException("Unexpected value");
-            }
+            };
             stringBuilder.append(toAppend);
             stringBuilder.append(" ");
         }
@@ -100,40 +100,33 @@ public class Plot {
      * @param treeType Type of some kind of tree
      * @param amount Amount of that kind of tree
      */
-    public void makePlotSpace(String treeType, int amount) {
+    public double makePlotSpace(String treeType, int amount) { 
         int spaceToMake = Tree.sizeBasedOnType(treeType) * amount;
-        int[] treesNeeded = treesNeeded(spaceToMake);
+        int[] treesNeeded = treesNeededToClearSpace(spaceToMake);
 
         int i = 0;
+        double treeCost = 0;
 
         while (i < trees.size()) {
             if (treesNeeded[0] > 0 && trees.get(i).getTreeType().equals("small")) {
                 treesNeeded[0]--;
-                sellTree(i);
+                treeCost += removeTree(i);
             } else if (treesNeeded[1] > 0 && trees.get(i).getTreeType().equals("medium")) {
                 treesNeeded[1]--;
-                sellTree(i);
+                treeCost += removeTree(i);
             } else if (treesNeeded[2] > 0 && trees.get(i).getTreeType().equals("large")) {
                 treesNeeded[2]--;
-                sellTree(i);
+                treeCost += removeTree(i);
             } else {
                 i++;
             }
         }
-    };
+        return (double) ((int) (treeCost / 2 * 100)) / 100;
+    }
 
-    /**
-     * Method that returns plot's value
-     *
-     * @return The sum of the cost of all trees
-     */
-    public int plotValue() {
-        int plotValue = COST;
-        for (Tree tree : trees) {
-            plotValue += tree.getTreePrice();
-        }
-
-        return plotValue;
+    public int[] treesRemovedIfMakeSpace(String treeType, int amount) { 
+        int spaceToMake = Tree.sizeBasedOnType(treeType) * amount;
+        return treesNeededToClearSpace(spaceToMake);
     }
 
     /**
@@ -141,13 +134,28 @@ public class Plot {
      *
      * @param idx Index of the tree object to sell
      */
-    public void sellTree(int idx) {
+    public double removeTree(int idx) {
+        int treeCost = trees.get(idx).getTreePrice();
         availableSpace += trees.get(idx).getTreeSize();
         trees.remove(idx);
+        return treeCost;
     }
 
-    private int[] treesNeeded(int plotSpace) {
-        int[] treeCount = countTrees();
+    public int[] countTreeTypes() {
+        int[] treeCount = new int[3];
+
+        for (Tree tree : trees) {
+            switch (tree.getTreeType()) {
+                case "small" -> treeCount[0]++;
+                case "medium" -> treeCount[1]++;
+                case "large" -> treeCount[2]++;
+                default -> throw new IllegalStateException("Unexpected value: " + tree.getTreeType());
+            }
+        }
+        return treeCount;
+    }
+    private int[] treesNeededToClearSpace(int plotSpace) {
+        int[] treeCount = countTreeTypes();
         int[] treesNeeded = new int[3];
 
         int smallTreesNeeded = (int) Math.nextUp((double) plotSpace / Tree.sizeBasedOnType("small"));
@@ -163,22 +171,9 @@ public class Plot {
         if (plotSpace <= 0) { return treesNeeded; }
 
         int largeTreesNeeded = (int) Math.nextUp((double) plotSpace / Tree.sizeBasedOnType("large"));
-        treesNeeded[2] = largeTreesNeeded;
+        treesNeeded[2] = Math.min(largeTreesNeeded, treeCount[2]);
 
         return treesNeeded;
     }
 
-    private int[] countTrees() {
-        int[] treeCount = new int[3];
-
-        for (Tree tree : trees) {
-            switch (tree.getTreeType()) {
-                case "small" -> treeCount[0]++;
-                case "medium" -> treeCount[1]++;
-                case "large" -> treeCount[2]++;
-                default -> throw new IllegalStateException("Unexpected value: " + tree.getTreeType());
-            }
-        }
-        return treeCount;
-    }
 }

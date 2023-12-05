@@ -1,13 +1,11 @@
 public class RandomEvent {
     private int eventNumber;
-    private boolean won; // to make decide if method adds or takes away money
-    private boolean eventLastWeek;
     private double multiplier;
-    public RandomEvent(boolean eventLastWeek) {
-        won = false;
-        this.eventLastWeek = eventLastWeek;
-        eventNumber = (int)(Math.random() * 10) + 1;
+    private boolean specialEvent;
+    public RandomEvent() {
+        eventNumber = (int)(Math.random() * 20) + 1;
         multiplier = 1;
+        specialEvent = false;
     }
 
     public String randomEventPrompt() {
@@ -21,19 +19,17 @@ public class RandomEvent {
         };
     }
     public boolean ifEvent() {
-        if (eventLastWeek) {
-            return false;
-        }
         return eventNumber <= 5;
-    }
-
-    public boolean hasWon() {
-        return won;
     }
 
     public double getMultiplier() {
         return multiplier;
     }
+
+    public boolean isSpecialEvent() {
+        return specialEvent;
+    }
+
     public String processRandomEvent() {
         return switch (eventNumber) {
             case 1 -> randomEvent1(); // make a method that returns how much money should be changed by this
@@ -47,38 +43,87 @@ public class RandomEvent {
 
     private String randomEvent1() {
         if (rollDice(7)) {
-            won = true;
-            multiplier = 1.2;
+            multiplier = 1.4;
             return "You got away with putting drugs in your lemonade! You'll make some extra cash this week!";
         } else {
-            multiplier = 0.8;
+            multiplier = 0.6;
             return "Dang! You've been exposed and FDA fines you a lot of cash!";
         }
     }
     private String randomEvent2() {
         if (rollDice(6)) {
-            won = true;
-            multiplier = 1.1;
+            multiplier = 1.3;
             return "You aren't paying your workers a living wage!!!! You'll make some extra cash this week!";
         } else {
-            multiplier = 0.8;
+            multiplier = 0.7;
             return "You're getting punished as you should be! Pay your workers a living wage next time! The labor department is giving you a major fine.";
         }
     }
     private String randomEvent3() {
         if (rollDice(8)) {
-            won = true;
-            multiplier = 1.1;
+            multiplier = 1.5;
             return "You actually beat the Mafia??? Good job you're going to get some great cash this week.";
         } else {
-            multiplier = 0.8;
+//            if (rollDice(10)) {
+//                specialEvent = true;
+//                return """
+//                                               uuuuuuuuuuuuuuuuuuuuu.
+//                                           .u$$$$$$$$$$$$$$$$$$$$$$$$$$W.
+//                                         u$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$Wu.
+//                                       $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$i
+//                                      $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//                                 `    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//                                   .i$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$i
+//                                   $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$W
+//                                  .$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$W
+//                                 .$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$i
+//                                 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$.
+//                                 W$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//                        $u       #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$~
+//                        $#      `"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//                        $i        $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//                        $$        #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//                        $$         $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//                        #$.        $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$#
+//                         $$      $iW$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$!
+//                         $$i      $$$$$$$#"" `""\"#$$$$$$$$$$$$$$$$$#""\"""\"#$$$$$$$$$$$$$$$W
+//                         #$$W    `$$$#"            "       !$$$$$`           `"#$$$$$$$$$$#
+//                          $$$     ``                 ! !iuW$$$$$                 #$$$$$$$#
+//                          #$$    $u                  $   $$$$$$$                  $$$$$$$~
+//                           "#    #$$i.               #   $$$$$$$.                 `$$$$$$
+//                                  $$$$$i.                ""\"#$$$$i.               .$$$$#
+//                                  $$$$$$$$!         .   `    $$$$$$$$$i           $$$$$
+//                                  `$$$$$  $iWW   .uW`        #$$$$$$$$$W.       .$$$$$$#
+//                                    "#$$$$$$$$$$$$#`          $$$$$$$$$$$iWiuuuW$$$$$$$$W
+//                                       !#""    ""             `$$$$$$$##$$$$$$$$$$$$$$$$
+//                                  i$$$$    .                   !$$$$$$ .$$$$$$$$$$$$$$$#
+//                                 $$$$$$$$$$`                    $$$$$$$$$Wi$$$$$$#"#$$`
+//                                 #$$$$$$$$$W.                   $$$$$$$$$$$#   ``
+//                                  `$$$$##$$$$!       i$u.  $. .i$$$$$$$$$#""
+//                                     "     `#W       $$$$$$$$$$$$$$$$$$$`      u$#
+//                                                    W$$$$$$$$$$$$$$$$$$      $$$$W
+//                                                    $$`!$$$##$$$$``$$$$      $$$$!
+//                                                   i$" $$$$  $$#"`  ""\"     W$$$$
+//                                                                           W$$$$!
+//                                              uW$$  uu  uu.  $$$  $$$Wu#   $$$$$$
+//                                             ~$$$$iu$$iu$$$uW$$! $$$$$$i .W$$$$$$
+//                                     ..  !   "#$$$$$$$$$$##$$$$$$$$$$$$$$$$$$$$#"
+//                                     $$W  $     "#$$$$$$$iW$$$$$$$$$$$$$$$$$$$$$W
+//                                     $#`   `       ""#$$$$$$$$$$$$$$$$$$$$$$$$$$$
+//                                                      !$$$$$$$$$$$$$$$$$$$$$#`
+//                                                      $$$$$$$$$$$$$$$$$$$$$$!
+//                                                    $$$$$$$$$$$$$$$$$$$$$$$`
+//                                                     $$$$$$$$$$$$$$$$$$$$"
+//
+//                                  you died (idea wasn't copied trust me)""";
+//            }
+            multiplier = 0.5;
             return "You've been beat up and your cash has been stolen. Shouldn't have messed with the Mafia.";
         }
     }
     private String randomEvent4() {
         if (rollDice(3)) {
-            won = true;
-            multiplier = 1.4;
+            multiplier = 1.2;
             return "Your ads were a great success! You'll be making some extra cash this week!";
         } else {
             multiplier = 0.8;
@@ -87,18 +132,17 @@ public class RandomEvent {
     }
     private String randomEvent5() {
         if (rollDice(1)) {
-            won = true;
-            multiplier = 1.5;
+            multiplier = 1.1;
             return "No one will ever know! You'll be making some extra bucks from these dealings this week!";
         } else {
-            multiplier = 0.7;
+            multiplier = 0.9;
             return "The US is upset! Get ready for a fine!";
         }
     }
     private boolean rollDice(int minToWin) {
         return ((int) (Math.random() * 10) + 1) >= minToWin;
     }
-    private String winPercent(int minToWin) {
+    private String winPercent(int minToWin) {  // im sorry mr miller this is the only way to meet the requirement
         String winPercent = "\nOdds of Losing\n";
         for (int i = 1; i <= 2; i++) {
             for (int j = 1; j <= minToWin; j++) {
