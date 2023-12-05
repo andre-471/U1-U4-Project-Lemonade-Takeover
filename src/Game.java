@@ -14,7 +14,7 @@ public class Game {
     private boolean dead;
 
     public Game() {
-        money = 100001;
+        money = 100;
         netWorth = money + Plot.BASE_COST + Tree.costBasedOnType("small");
         plots = new ArrayList<Plot>();
         plots.add(new Plot());
