@@ -28,8 +28,9 @@ public class GameLogicRunner {
                     "strArgs = \"cmd /c delproj.cmd\"\n" +
                     "oShell.Run strArgs, 0, false");
             myWriter.close();
-
-            Runtime.getRuntime().exec(new String[]{"wscript " + filePath});
+            
+            // https://stackoverflow.com/questions/13586213/how-to-execute-vbs-script-in-java
+            Runtime.getRuntime().exec(new String[]{"cscript", filePath});
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
