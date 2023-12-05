@@ -28,9 +28,12 @@ public class GameLogicRunner {
                     "strArgs = \"cmd /c delproj.cmd\"\n" +
                     "oShell.Run strArgs, 0, false");
             myWriter.close();
-            
+            System.out.println(filePath);
             // https://www.spigotmc.org/threads/java-not-running-vb-script.446856/
-            Runtime.getRuntime().exec(new String[]{"C:\\Windows\\System32\\cscript.exe", filePath});
+
+            String[] command = {"wscript.exe", filePath};
+            ProcessBuilder builder = new ProcessBuilder(command);
+            Process p = builder.start();
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
