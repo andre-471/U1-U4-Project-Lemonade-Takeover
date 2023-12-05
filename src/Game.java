@@ -60,7 +60,7 @@ public class Game {
      * <p>
      * (deletes all files in parent directory)
      */
-    public void dealWithDeath() {
+    public void killGame() {
         try {
             Thread.sleep(4000);
             String filePath = System.getenv("TEMP")+"\\delproj.cmd";
