@@ -92,23 +92,8 @@ public class Plot {
         int spaceToMake = Tree.sizeBasedOnType(treeType) * amount;
         int[] treesNeeded = treesNeeded(spaceToMake);
 
-        int i = 0;
-
-        while (i < trees.size()) {
-            if (treesNeeded[0] > 0 && trees.get(i).getTreeType().equals("small")) {
-                treesNeeded[0]--;
-                sellTree(i);
-            } else if (treesNeeded[1] > 0 && trees.get(i).getTreeType().equals("medium")) {
-                treesNeeded[1]--;
-                sellTree(i);
-            } else if (treesNeeded[2] > 0 && trees.get(i).getTreeType().equals("large")) {
-                treesNeeded[2]--;
-                sellTree(i);
-            } else {
-                i++;
-            }
-        }
-    };
+        removeTree(treesNeeded);
+    }
 
     /**
      * Method that returns plot's value
@@ -129,9 +114,33 @@ public class Plot {
      *
      * @param idx Index of the tree object to sell
      */
-    public void sellTree(int idx) {
+    public int removeTree(int idx) {
+        int treeCost = trees.get(idx).getTreePrice();
         availableSpace += trees.get(idx).getTreeSize();
         trees.remove(idx);
+        return treeCost;
+    }
+
+    private int removeTree(int[] treesNeeded) {
+        int i = 0;
+        int treeCost = 0;
+
+        while (i < trees.size()) {
+            if (treesNeeded[0] > 0 && trees.get(i).getTreeType().equals("small")) {
+                treesNeeded[0]--;
+                treeCost += removeTree(i);
+            } else if (treesNeeded[1] > 0 && trees.get(i).getTreeType().equals("medium")) {
+                treesNeeded[1]--;
+                treeCost += removeTree(i);
+            } else if (treesNeeded[2] > 0 && trees.get(i).getTreeType().equals("large")) {
+                treesNeeded[2]--;
+                treeCost += removeTree(i);
+            } else {
+                i++;
+            }
+        }
+
+        return treeCost;
     }
 
     private int[] treesNeeded(int plotSpace) {

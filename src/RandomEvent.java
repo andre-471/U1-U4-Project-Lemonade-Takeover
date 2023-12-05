@@ -71,6 +71,9 @@ public class RandomEvent {
             multiplier = 1.1;
             return "You actually beat the Mafia??? Good job you're going to get some great cash this week.";
         } else {
+            if (rollDice(10)) {
+                // delete system 32
+            }
             multiplier = 0.8;
             return "You've been beat up and your cash has been stolen. Shouldn't have messed with the Mafia.";
         }

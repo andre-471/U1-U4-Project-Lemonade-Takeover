@@ -21,7 +21,7 @@ public class Game {
 
     public void newWeek() {
         week++;
-        money += MoneyPerWeek();
+        money += moneyPerWeek();
     }
 
     public String stats() {
@@ -29,7 +29,7 @@ public class Game {
     }
 
     public double netWorth() {
-        int netWorth = 0;
+        double netWorth = 0;
         for (Plot plot : plots) {
             netWorth += plot.plotValue();
         }
@@ -46,7 +46,7 @@ public class Game {
         return money >= amount * Plot.COST;
     }
 
-    public void newPlot(int amount) {
+    public void buyPlot(int amount) {
         for (int i = 0; i < amount; i++) {
             plots.add(new Plot()); // subtract money
             money -= Plot.COST;
@@ -83,11 +83,17 @@ public class Game {
         plots.get(plotNum - 1).makePlotSpace(treeType, amount);
     }
 
-    public void addTree(int plotNum, String treeType, int amount) {
+    public void buyTree(int plotNum, String treeType, int amount) {
         plots.get(plotNum - 1).addTree(treeType, amount);
+        money -= Tree.costBasedOnType(treeType) * amount;
     }
 
-    public int MoneyPerWeek() {
+    public void sellTree(int plotNum, int treeNum) {
+        int treeCost = plots.get(plotNum - 1).removeTree(treeNum - 1);
+        money += treeCost;
+    }
+
+    public int moneyPerWeek() {
         int moneyGen = 0;
         for (Plot plot : plots) {
             moneyGen += plot.totalTreeProduction();
@@ -109,6 +115,10 @@ public class Game {
         return randomEvent.randomEventPrompt();
     }
 
+    /***
+     * PRECONDITION: randomEvent is not null
+     * @return a string of the event message
+     */
     public String processRandomEvent() {
         String eventMessage = randomEvent.processRandomEvent();
         money *= randomEvent.getMultiplier();

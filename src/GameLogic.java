@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GameLogic {
     private final String[] MENU_CHOICES = new String[]{"trees", "plots", "stats", "end week"};
@@ -10,7 +12,6 @@ public class GameLogic {
     public GameLogic() {
         game = new Game();
         scan = new Scanner(System.in);
-        // events = new RandomEvents();
         start();
     }
 
@@ -37,19 +38,20 @@ public class GameLogic {
                 "input: ");
         String userInput = repeatUntil(MENU_CHOICES);
         switch (userInput) {
-            case "trees" -> newTree();
-            case "plots" -> newPlot();
+            case "buy trees" -> buyTree();
+//            case "sell trees" ->
+            case "plots" -> buyPlot();
             case "stats" -> System.out.println(game.stats());
             case "end week" -> endWeek();
             default -> throw new IllegalStateException("Unexpected value: " + userInput); // this is illegal
         }
     }
 
-    private void newTree() {
+    private void buyTree() {
         System.out.print("What kind of tree would you like?: ");
         String treeType = repeatUntil(TREE_CHOICES);
         System.out.print("How many trees would you like to purchase?: ");
-        // make sures you can't buy more than how many trees could fit in a plot
+        // make sure you can't buy more than how many trees could fit in a plot
         int amountWanted = repeatUntil(0, Plot.maxTreesInPlot(treeType));
 
         if (!game.canAffordTrees(treeType, amountWanted)) {
@@ -59,24 +61,30 @@ public class GameLogic {
 
         System.out.print("Which plot would you like to plant it in?: ");
         int userPlotNum = repeatUntil(1, game.totalPlots()); // should always be at least 1
-        if (!game.plotHasSpace(userPlotNum, treeType, amountWanted) && !clearedSpace(userPlotNum, treeType, amountWanted)) {
+        if (!game.plotHasSpace(userPlotNum, treeType, amountWanted) && !clearSpace(userPlotNum, treeType, amountWanted)) {
             System.out.println("Error, space not available in plot");
             return;
         }
 
-        game.addTree(userPlotNum, treeType, amountWanted);
+        game.buyTree(userPlotNum, treeType, amountWanted);
         System.out.println("Trees have been purchased!");
     }
 
 
-    private void newPlot() {
+    private void buyPlot() {
         System.out.print("How many plots do you want to buy?: ");
         int amount = repeatUntil(0, 100);
         if (game.canAffordPlots(amount)) {
-            game.newPlot(amount);
+            game.buyPlot(amount);
         } else {
             System.out.println("Error, you do not have enough money to buy this many plots.");
         }
+    }
+
+    private void sellTree() {
+        String userChoice = repeatUntil();
+
+        String[] choices = userChoice.split(",");
     }
 
     private void endWeek() {
@@ -93,7 +101,7 @@ public class GameLogic {
         game.newWeek();
     }
 
-    private boolean clearedSpace(int plotNum, String treeType, int amount) {
+    private boolean clearSpace(int plotNum, String treeType, int amount) {
         System.out.print("do you want clear space? ");
         String userChoice = repeatUntil(OPTIONS);
         if ("no".equals(userChoice)) { return false; }
@@ -110,6 +118,19 @@ public class GameLogic {
     private String repeatUntil(String[] strings) {
         String input = scan.nextLine().trim().toLowerCase();
         while (!stringInArray(strings, input)) {
+            System.out.print("Error, please type in a valid response: ");
+            input = scan.nextLine().trim().toLowerCase();
+        }
+
+        return input;
+    }
+
+    private String repeatUntil() {
+        String input = scan.nextLine().trim().toLowerCase();
+
+        Pattern pattern = Pattern.compile("[^0-9, ]");
+
+        while (!pattern.matcher(input).matches()) {
             System.out.print("Error, please type in a valid response: ");
             input = scan.nextLine().trim().toLowerCase();
         }
