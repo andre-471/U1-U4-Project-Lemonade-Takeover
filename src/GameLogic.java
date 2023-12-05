@@ -32,7 +32,7 @@ public class GameLogic {
         if (game.hasWon()) {
             System.out.println("Good Job!!! You won!!!! Good on you!!!!");
         } else {
-            game.dealWithDeath();
+            game.killGame();
         }
     }
 
