@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Plot {
     /** The cost of a plot */
-    public static final int COST = 100;
+    public static final int COST = 10000;
 
     /** The size of a plot */
     private static final int SIZE = 70;

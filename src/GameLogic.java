@@ -10,12 +10,12 @@ public class GameLogic {
     public GameLogic() {
         game = new Game();
         scan = new Scanner(System.in);
-        // events = new RandomEvents();
         start();
     }
 
     private void start() {
-        System.out.println("backstory");
+        System.out.println("Ever since you were a wee youngin, you aspired to be a great capitalist, dominating the world in your image.\nYou smelt the opportunity of making great riches when you were bribing lab workers, and they talked about a new project\nGenetically modified lemon trees, that produce every week no matter the season.\nThis was it, the moment you've been waiting for.\n");
+        System.out.println("Your goal to win is to become the face of lemonade, also known as acquire over a million dollars in net worth.");
         gameLoop();
     }
 
@@ -46,13 +46,14 @@ public class GameLogic {
     }
 
     private void newTree() {
-        System.out.print("What kind of tree would you like?: ");
+        System.out.print("What kind of tree would you like? (Small, Medium, or Large): ");
         String treeType = repeatUntil(TREE_CHOICES);
+        System.out.println("A plot can hold up to 10 small trees, 7 medium trees, or 5 large trees!");
         System.out.print("How many trees would you like to purchase?: ");
         // make sures you can't buy more than how many trees could fit in a plot
         int amountWanted = repeatUntil(0, Plot.maxTreesInPlot(treeType));
 
-        if (!game.canAffordTrees(treeType, amountWanted)) {
+        if (!game.canAfford(treeType, amountWanted)) {
             System.out.println("You cannot afford " + amountWanted + " trees.");
             return;
         }
@@ -64,6 +65,7 @@ public class GameLogic {
             return;
         }
 
+        game.chargeMoney(treeType,amountWanted);
         game.addTree(userPlotNum, treeType, amountWanted);
         System.out.println("Trees have been purchased!");
     }
@@ -72,7 +74,8 @@ public class GameLogic {
     private void newPlot() {
         System.out.print("How many plots do you want to buy?: ");
         int amount = repeatUntil(0, 100);
-        if (game.canAffordPlots(amount)) {
+        if (game.canAfford(amount)) {
+            game.chargeMoney(amount);
             game.newPlot(amount);
         } else {
             System.out.println("Error, you do not have enough money to buy this many plots.");
@@ -83,7 +86,7 @@ public class GameLogic {
         System.out.println();
 
         if (game.newRandomEvent()) {
-            System.out.println(game.randomEventPrompt());
+            System.out.print(game.randomEventPrompt());
             String userInput = repeatUntil(OPTIONS);
             if (userInput.equals("yes"))
             {
@@ -104,7 +107,7 @@ public class GameLogic {
     }
 
     private boolean hasWon() {
-        return false;
+        return "the face of lemonade".equals(game.returnRank());
     }
 
     private String repeatUntil(String[] strings) {

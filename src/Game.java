@@ -9,19 +9,23 @@ public class Game {
     private boolean eventLastWeek;
 
     public Game() {
-        money = 10000;
+        money = 1000;
         plots = new ArrayList<Plot>();
         plots.add(new Plot());
+        plots.get(0).addTree("small",1);
         week = 0;
         rank = "local lemonade store";
         randomEvent = null;
         eventLastWeek = false;
     }
 
-
+    public String returnRank() {
+        return rank;
+    }
     public void newWeek() {
         week++;
         money += MoneyPerWeek();
+        updateRank();
     }
 
     public String stats() {
@@ -38,12 +42,18 @@ public class Game {
 
         return netWorth;
     }
-    public boolean canAffordTrees(String treeType, int amount) {
+    public boolean canAfford(String treeType, int amount) {
         return money >= Tree.costBasedOnType(treeType) * amount;
     }
 
-    public boolean canAffordPlots(int amount) {
+    public boolean canAfford(int amount) {
         return money >= amount * Plot.COST;
+    }
+    public void chargeMoney(int amount) {
+        money -= amount * Plot.COST;
+    }
+    public void chargeMoney(String treeType, int amount) {
+        money -= Tree.costBasedOnType(treeType) * amount;
     }
 
     public void newPlot(int amount) {
@@ -55,10 +65,6 @@ public class Game {
 
     public int totalPlots() {
         return plots.size();
-    }
-
-    public void updateRank() {
-
     }
 
     public String getPlotTrees(int plotNum) {
@@ -123,5 +129,19 @@ public class Game {
         decimal = (int) decimal;
         decimal /= 100;
         money = intMoney + decimal;
+    }
+    private void updateRank() {
+        double netWorth = netWorth();
+        if (netWorth < 50000) {
+            rank = "local lemonade store";
+        } else if (netWorth < 100000) {
+            rank = "regional lemonade chain";
+        } else if (netWorth < 250000) {
+            rank = "national lemonade chain";
+        } else if (netWorth < 1000000) {
+            rank = "world wide lemonade chain";
+        } else {
+            rank = "the face of lemonade";
+        }
     }
 }

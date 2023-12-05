@@ -11,14 +11,14 @@ public class Tree {
     /** The size of all large trees */
     private static final int TREE_SIZE_L = 14;
     /** The cost of all small trees */
-    private static final int TREE_COST_S = 5;
+    private static final int TREE_COST_S = 250;
     /** The cost of all medium trees */
-    private static final int TREE_COST_M = 50;
+    private static final int TREE_COST_M = 500;
     /** The cost of all large trees */
     private static final int TREE_COST_L = 1000;
-    private static final int TREE_PRODUCTION_S = 5;
-    private static final int TREE_PRODUCTION_M = 20;
-    private static final int TREE_PRODUCTION_L = 45;
+    private static final int TREE_PRODUCTION_S = 50;
+    private static final int TREE_PRODUCTION_M = 120;
+    private static final int TREE_PRODUCTION_L = 250;
     /** the size of a tree in String format*/
     private String treeType;
     /** the size of a tree in int format */

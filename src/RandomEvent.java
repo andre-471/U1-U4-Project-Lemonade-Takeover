@@ -12,11 +12,11 @@ public class RandomEvent {
 
     public String randomEventPrompt() {
         return switch (eventNumber) {
-            case 1 -> "Would you like to put drugs in your lemonade?\nYes or no?: ";
-            case 2 -> "Do you cut your worker's wages?\nYes or no?: ";
-            case 3 -> "The Mafia is taking your trees! Do you fight back?\nYes or no?: ";
-            case 4 -> "Would you like to try a new advertising campaign?\nYes or no?: ";
-            case 5 -> "Do you buy sugar on the black market at a discount price?\nYes or no?: ";
+            case 1 -> "Would you like to put drugs in your lemonade?\n" + winPercent(7) + "Yes or no?: ";
+            case 2 -> "Do you cut your worker's wages?\n" + winPercent(6) + "Yes or no?: ";
+            case 3 -> "The Mafia is taking your trees! Do you fight back?\n" + winPercent(8) + "Yes or no?: ";
+            case 4 -> "Would you like to try a new advertising campaign?\n" + winPercent(3) + "Yes or no?: ";
+            case 5 -> "Do you buy sugar on the black market at a discount price?\n" + winPercent(1) + " Yes or no?: ";
             default -> throw new IllegalStateException("Unexpected value: " + eventNumber);
         };
     }
@@ -46,7 +46,7 @@ public class RandomEvent {
     }
 
     private String randomEvent1() {
-        if (rollDice(5)) {
+        if (rollDice(7)) {
             won = true;
             multiplier = 1.2;
             return "You got away with putting drugs in your lemonade! You'll make some extra cash this week!";
@@ -56,7 +56,7 @@ public class RandomEvent {
         }
     }
     private String randomEvent2() {
-        if (rollDice(4)) {
+        if (rollDice(6)) {
             won = true;
             multiplier = 1.1;
             return "You aren't paying your workers a living wage!!!! You'll make some extra cash this week!";
@@ -66,7 +66,7 @@ public class RandomEvent {
         }
     }
     private String randomEvent3() {
-        if (rollDice(3)) {
+        if (rollDice(8)) {
             won = true;
             multiplier = 1.1;
             return "You actually beat the Mafia??? Good job you're going to get some great cash this week.";
@@ -76,7 +76,7 @@ public class RandomEvent {
         }
     }
     private String randomEvent4() {
-        if (rollDice(8)) {
+        if (rollDice(3)) {
             won = true;
             multiplier = 1.4;
             return "Your ads were a great success! You'll be making some extra cash this week!";
@@ -86,7 +86,7 @@ public class RandomEvent {
         }
     }
     private String randomEvent5() {
-        if (rollDice(9)) { // why are the odds so horrible for htis one
+        if (rollDice(1)) {
             won = true;
             multiplier = 1.5;
             return "No one will ever know! You'll be making some extra bucks from these dealings this week!";
@@ -97,5 +97,17 @@ public class RandomEvent {
     }
     private boolean rollDice(int minToWin) {
         return ((int) (Math.random() * 10) + 1) >= minToWin;
+    }
+    private String winPercent(int minToWin) {
+        String winPercent = "\nOdds of Losing\n";
+        for (int i = 1; i <= 2; i++) {
+            for (int j = 1; j <= minToWin; j++) {
+                winPercent += "[10]";
+            }
+            winPercent += " = " + (minToWin * 10) + "% \n";
+            minToWin = 10 - minToWin;
+        }
+        winPercent += "Odds of Winning\n";
+        return winPercent;
     }
 }
